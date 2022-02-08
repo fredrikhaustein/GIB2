@@ -1,2 +1,2 @@
 # GIB2
-NextJS, React, Typescript, PostGRESQL
+NextJS with Typescript, Yarn, Postgres with Prisma, Apolloserver GraphQL with Nexus schema builder, TailwindCSS
