@@ -36,3 +36,10 @@ model Link {
   category    String
   users         User[]
 }
+
+
+model Place {
+  id          String   @id @default(uuid())
+  coordinateX String
+  coordinateY String
+}
