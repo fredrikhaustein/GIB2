@@ -9,7 +9,7 @@ const AllMountainsQuery = gql`
                         navn
                         wkb_geometry
                         lat
-                        long
+                        lon
                         h_yde
                 }
         }
