@@ -11,18 +11,18 @@ datasource db {
 }
 
 model User {
-        id      String  @id @default(uuid())
-        createdAt       DateTime @default(now())
-        updatedAt       DateTime @updatedAt
-        email String?   @unique
-        image String?
-        role    Role    @default(USER)
-        bookmarks Link[]
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  email     String?  @unique
+  image     String?
+  role      Role     @default(USER)
+  bookmarks Link[]
 }
 
 enum Role {
-        USER
-        ADMIN
+  USER
+  ADMIN
 }
 
 model Link {
@@ -34,5 +34,5 @@ model Link {
   url         String
   imageUrl    String
   category    String
-  users         User[]
+  users       User[]
 }
