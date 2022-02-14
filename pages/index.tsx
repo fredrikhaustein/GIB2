@@ -1,12 +1,45 @@
 // /pages/index.tsx
-import dynamic from "next/dynamic";
+import Head from "next/head";
+import { gql, useQuery } from "@apollo/client";
 
-function HomePage() {
-        const Map = dynamic( // Use next/dynamic and avoid server-side rende
-                () => import("../components/map"), 
-                { ssr: false } 
+const AllMountainsQuery = gql`
+        query {
+                mountains {
+                        ogc_fid
+                        navn
+                        wkb_geometry
+                        lat
+                        long
+                        h_yde
+                }
+        }
+`;
+
+export default function Home() {
+        const { data, loading, error } = useQuery(AllMountainsQuery);
+
+        if (loading) return <p>Loading...</p>;
+        if (error) return <p>Oh no... {error.message}</p>;
+
+        return (
+                <div>
+                        <Head>
+                                <title>Awesome Links</title>
+                                <link rel="icon" href="/favicon.ico" />
+                        </Head>
+
+                        <div className="container mx-auto max-w-5xl my-20">
+                                <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                                        {data.mountains.map((mountain) => (
+                                                <li
+                                                        key={mountain.ogc_fid}
+                                                        className="shadow  max-w-md  rounded"
+                                                >
+                                                        {mountain.navn}
+                                                </li>
+                                        ))}
+                                </ul>
+                        </div>
+                </div>
         );
-        return <Map />;
 }
-
-export default HomePage;
