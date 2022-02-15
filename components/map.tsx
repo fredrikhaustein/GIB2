@@ -1,17 +1,25 @@
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
-import { Mountain } from "../graphql/types/Mountain";
 import "leaflet/dist/leaflet.css";
+import { Mountain } from "../src/types";
 
 const Map = ({ mapData }) => {
-        let mapDataArray = mapData.mountains.map((mountain: Mountain) => ({
-                key: mountain.ogc_fid,
-                name: mountain.navn,
-                lat: mountain.lat,
-                lon: mountain.lon,
-        }));
-        let mountain = mapDataArray[1];
-        console.log(mountain.lat);
-        console.log(mountain.lon);
+        let mapDataArray: Array<Mountain> = mapData.mountains.map(
+                (mountain: Mountain) => ({
+                        ogc_fid: mountain.ogc_fid,
+                        h_yde: mountain.h_yde,
+                        lat: mountain.lat,
+                        lon: mountain.lon,
+                        navn: mountain.navn,
+                        wkb_geometry: mountain.wkb_geometry,
+                })
+        );
+        const mountain: Mountain = mapDataArray.find(
+                (e) => e.navn == "Snøhetta"
+        );
+        console.log(mountain);
+        //let mountain = mapDataArray.key(1);
+        //console.log(mountain.lat);
+        //console.log(mountain.lon);
 
         return (
                 <div>
