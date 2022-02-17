@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,29 +7,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-        id      String  @id @default(uuid())
-        createdAt       DateTime @default(now())
-        updatedAt       DateTime @updatedAt
-        email String?   @unique
-        image String?
-        role    Role    @default(USER)
-        bookmarks Link[]
+model fjell_over_1000m {
+  ogc_fid      Int     @id @default(autoincrement())
+  wkb_geometry Bytes?
+  navn         String? @db.VarChar
+  lat          Float?
+  lon          Float?
+  h_yde        Int?    @map("høyde")
 }
 
 enum Role {
-        USER
-        ADMIN
-}
-
-model Link {
-  id          String   @id @default(uuid())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  title       String
-  description String
-  url         String
-  imageUrl    String
-  category    String
-  users         User[]
+  USER
+  ADMIN
 }

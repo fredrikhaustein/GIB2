@@ -2,30 +2,15 @@
 ### Do not make changes to this file directly
 
 
-type Link {
-  category: String
-  description: String
-  id: String
-  imageUrl: String
-  title: String
-  url: String
-  users: [User]
+type Mountain {
+  h_yde: Int
+  lat: Float
+  lon: Float
+  navn: String
+  ogc_fid: String
+  wkb_geometry: [Int]
 }
 
 type Query {
-  links: [Link]!
-}
-
-enum Role {
-  ADMIN
-  USER
-}
-
-type User {
-  bookmarks: [Link]
-  email: String
-  id: String
-  image: String
-  name: String
-  role: Role
+  mountains: [Mountain]!
 }
