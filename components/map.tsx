@@ -66,9 +66,6 @@ const MountainMap = ({ mapData }) => {
                                 </Marker>
                         </MapContainer>
                         <select onChange={handleMountainChange}>
-                                <option value="1">
-                                        {findMountain(1).navn}
-                                </option>
                                 {mapDataArray.map((mountain: Mountain) => (
                                         <option value={mountain.ogc_fid}>
                                                 {mountain.navn}
