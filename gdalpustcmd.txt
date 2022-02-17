@@ -1,0 +1,2 @@
+PG:"dbname='databasename' host='addr' port='5432' user='x' password='y'"
+ogr2ogr -f "PostgreSQL" PG:"dbname=d9jr4v2uvj3556 host=ec2-34-252-251-16.eu-west-1.compute.amazonaws.com post=5432 user=wugziaildpretv password=87ea06c19eeb2b8feac6d2e87e2f4b38d264f2c10b3fb67ce8566bf1b7d425a8" "fjell-over-1000m.geojson" -nln fjell_over_1000m -append
