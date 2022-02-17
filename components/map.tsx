@@ -1,15 +1,7 @@
-import {
-        MapContainer,
-        Marker,
-        Popup,
-        TileLayer,
-        useMap,
-        useMapEvent,
-} from "react-leaflet";
+import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { Mountain } from "../src/types";
-import { useCallback, useEffect, useRef, useState } from "react";
-import MapChangeButton from "./mapChangeButton";
+import { useState } from "react";
 import { latLng } from "leaflet";
 import React from "react";
 
@@ -29,8 +21,7 @@ const MountainMap = ({ mapData }) => {
                 return mapDataArray.find((e) => e.ogc_fid == fid);
         };
 
-        const mountain: Mountain = findMountain(1);
-        const newMountain: Mountain = findMountain(2);
+        const biggestMountain: Mountain = findMountain(1);
 
         const [map, setMap] = useState(null);
         async function handleMapButton(newMountain: Mountain) {
@@ -45,7 +36,10 @@ const MountainMap = ({ mapData }) => {
         return (
                 <div>
                         <MapContainer
-                                center={[mountain.lat, mountain.lon]}
+                                center={[
+                                        biggestMountain.lat,
+                                        biggestMountain.lon,
+                                ]}
                                 zoom={13}
                                 scrollWheelZoom={false}
                                 style={{ height: 400, width: "100%" }}
