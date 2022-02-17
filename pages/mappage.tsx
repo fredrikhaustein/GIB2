@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 import { gql, useQuery } from "@apollo/client";
-import { Mountain } from "../graphql/types";
+import { Mountain } from "../src/types";
 
 const AllMountainsQuery = gql`
         query {
@@ -20,6 +20,11 @@ function HomePage() {
 
         if (loading) return <p>Loading...</p>;
         if (error) return <p>Oh no... {error.message}</p>;
+        const mountainNames: string = data.mountains.map(
+                (mountain: Mountain) => ({
+                        mountainName: mountain.navn,
+                })
+        );
 
         const Map = dynamic(
                 () => import("components/map"), // replace '@components/map' with your component's location
