@@ -5,23 +5,23 @@ import { links } from "../data/links";
 const prisma = new PrismaClient();
 
 async function main() {
-        await prisma.user.create({
-                data: {
-                        email: `siguskat@stud.ntnu.no`,
-                        role: "USER",
-                },
-        });
+  await prisma.user.create({
+    data: {
+      email: `siguskat@stud.ntnu.no`,
+      role: "USER",
+    },
+  });
 
-        await prisma.link.createMany({
-                data: links,
-        });
+  await prisma.link.createMany({
+    data: links,
+  });
 }
 
 main()
-        .catch((e) => {
-                console.error(e);
-                process.exit(1);
-        })
-        .finally(async () => {
-                await prisma.$disconnect();
-        });
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
