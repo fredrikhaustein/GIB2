@@ -7,7 +7,7 @@ export type Mountain = {
   wkb_geometry: number[];
 };
 
-interface ILatlng {
+export interface ILatlng {
   lat: number;
   lng: number;
 }

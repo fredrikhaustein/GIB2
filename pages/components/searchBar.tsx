@@ -22,6 +22,8 @@ export default function searchBar() {
   const [inputValue, setInputValue] = useState("");
   const [value, setValue] = useState<String | null>(null);
 
+  const handleSelect = () => {};
+
   useMemo(() => {
     const fetchAdress = async () => {
       try {

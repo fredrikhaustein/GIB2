@@ -1,11 +1,12 @@
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import { Mountain } from "../src/types";
+import { Latlng, Mountain } from "../src/types";
 import { useState } from "react";
-import { latLng } from "leaflet";
+import { latLng, LatLngTuple, Point } from "leaflet";
 import React from "react";
 import styled from "@emotion/styled";
 import SearchBar from "../pages/components/searchBar";
+import * as L from "leaflet";
 
 const GridRow = styled.div`
   display: grid;
@@ -40,7 +41,19 @@ const MountainMap = ({ mapData }) => {
 
   const biggestMountain: Mountain = findMountain(1);
 
+  const markerIcon = new L.Icon({
+    iconUrl: require("../pages/Static/icons/flag.png"),
+    iconAnchor: null,
+    popupAnchor: null,
+    shadowUrl: null,
+    shadowSize: null,
+    shadowAnchor: null,
+    iconSize: new L.Point(60, 75),
+  });
+
   const [map, setMap] = useState(null);
+  const [latlong, setLatLong] = useState<LatLngTuple>([50, 10]);
+  const [mountainInfo, setMountainInfo] = useState("");
   async function handleMapButton(newMountain: Mountain) {
     await map.panTo(latLng(newMountain.lat, newMountain.lon));
   }
@@ -48,7 +61,11 @@ const MountainMap = ({ mapData }) => {
   const handleMountainChange = (e) => {
     const newMountain = findMountain(e.target.value);
     handleMapButton(newMountain);
+    setLatLong([newMountain.lat, newMountain.lon]);
+    setMountainInfo(`${newMountain.navn} er ${newMountain.h_yde} MOH`);
   };
+
+  const handleOnOpen = (e) => {};
 
   return (
     <GridRow>
@@ -74,10 +91,8 @@ const MountainMap = ({ mapData }) => {
         {/*
          *<UpdateMapCenter newMountain={newMountain} />
          */}
-        <Marker position={[51.505, -0.09]}>
-          <Popup>
-            A pretty CSS3 popup. <br /> Easily customizable.
-          </Popup>
+        <Marker position={latlong}>
+          <Popup>{mountainInfo}</Popup>
         </Marker>
       </MapContainer>
     </GridRow>
