@@ -37,10 +37,6 @@ export const Sidebar = () => {
       <li>Rute 4</li>
       <li>Rute 5</li>
       <br />
-      <Button variant="contained" component="label">
-        Last inn GPX-fil
-        <input type="file" hidden />
-      </Button>
     </SidebarStyled>
   );
 };
