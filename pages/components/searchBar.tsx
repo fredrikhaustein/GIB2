@@ -1,7 +1,10 @@
 import axios from "axios";
-import React, { useEffect, useMemo, useState } from "react";
+import * as L from "leaflet";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import api from "./api/posts";
 import { Autocomplete, TextField } from "@mui/material";
+import { useRecoilState } from "recoil";
+import { latlngHouseState } from "../../state/atoms";
 
 const apiAddresse = axios.create({
   baseURL:
@@ -18,11 +21,11 @@ const optionsArray: Ioptions[] = [];
 
 export default function searchBar() {
   const [latlngAdresse, setLatLngAdresse] = useState([]);
+  const [houseLatlngState, setHouseLatlngState] =
+    useRecoilState(latlngHouseState);
   const [options, setOptions] = useState([]);
   const [inputValue, setInputValue] = useState("");
-  const [value, setValue] = useState<String | null>(null);
-
-  const handleSelect = () => {};
+  const [value, setValue] = useState("");
 
   useMemo(() => {
     const fetchAdress = async () => {
@@ -31,13 +34,15 @@ export default function searchBar() {
           `https://ws.geonorge.no/adresser/v1/sok?side=0&treffPerSide=10&asciiKompatibel=true&utkoordsys=4258&sok=${value}`
         );
         const adresser = response.data.adresser;
-        setLatLngAdresse(
-          adresser.map((a) => [
-            a.representasjonspunkt.lat,
-            a.representasjonspunkt.lon,
-          ])
-        );
-        console.log("Dette er latlong " + latlngAdresse);
+        console.log("USEMEMO");
+        console.log(adresser);
+        if (adresser) {
+          const latlng = adresser.map((a) =>
+            L.latLng(a.representasjonspunkt.lat, a.representasjonspunkt.lon)
+          );
+          setHouseLatlngState(latlng);
+        }
+        console.log(houseLatlngState);
       } catch (err) {
         if (err.response) {
           console.log(err.response.data);
@@ -47,7 +52,7 @@ export default function searchBar() {
       }
     };
     fetchAdress();
-  }, [setValue]);
+  }, [value]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,18 +61,18 @@ export default function searchBar() {
           `https://ws.geonorge.no/adresser/v1/sok?side=0&treffPerSide=10&asciiKompatibel=true&utkoordsys=4258&sok=${inputValue}`
         );
         const adresser = response.data.adresser;
-        //console.log("Dette er addresse " + adresser);
-        setOptions(adresser.map((a) => `${a.adressetekst} ${a.kommunenavn}`));
+        setOptions(adresser.map((a) => `${a.adressetekst}, ${a.kommunenavn}`));
         console.log("Dette er options " + options);
         console.log("Dette er value " + value);
         console.log("Dette er inputvalue " + inputValue);
-        setLatLngAdresse(
-          adresser.map((a) => [
-            a.representasjonspunkt.lat,
-            a.representasjonspunkt.lon,
-          ])
-        );
-        console.log(latlngAdresse);
+        // if (adresser) {
+        //   setHouseLatlngState(
+        //     adresser.map((a) =>
+        //       L.latLng(a.representasjonspunkt.lat, a.representasjonspunkt.lon)
+        //     )
+        //   );
+        //   console.log("Latlng house er " + houseLatlngState);
+        // }
       } catch (err) {
         if (err.response) {
           console.log(err.response.data);
@@ -77,7 +82,7 @@ export default function searchBar() {
       }
     };
     fetchData();
-  }, [setInputValue, setOptions, inputValue]);
+  }, [setInputValue, inputValue]);
 
   return (
     <div>
@@ -94,7 +99,7 @@ export default function searchBar() {
         onInputChange={(event, newInputValue) => {
           setInputValue(newInputValue);
         }}
-        onChange={(event: any, newValue: String | null) => {
+        onChange={(event: any, newValue: string) => {
           setOptions(newValue ? [newValue, ...options] : options);
           setValue(newValue);
         }}

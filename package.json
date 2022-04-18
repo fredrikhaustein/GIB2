@@ -67,10 +67,13 @@
     "@material-ui/icons": "^4.11.2",
     "@mui/material": "^5.4.3",
     "@prisma/client": "^3.9.1",
+    "@types/leaflet-routing-machine": "^3.2.3",
     "axios": "^0.26.0",
     "graphql-config": "^4.1.0",
     "leaflet-geosearch": "^3.6.0",
+    "leaflet-routing-machine": "^3.2.12",
     "postgres": "^1.0.2",
+    "recoil": "^0.7.0",
     "yarn": "^1.22.17"
   }
 }

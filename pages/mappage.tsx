@@ -5,6 +5,7 @@ import { Sidebar } from "./components/sidebar";
 import styled from "@emotion/styled";
 import React, { useEffect, useRef } from "react";
 import "leaflet/dist/leaflet.css";
+import { RecoilRoot } from "recoil";
 
 const AllMountainsQuery = gql`
   query {
@@ -23,6 +24,7 @@ const GridColums = styled.div`
   display: grid;
   grid-template-columns: 15% 85%;
   background-color: #ffffff;
+  height: 700px;
 `;
 
 export function HomePage() {
@@ -35,7 +37,7 @@ export function HomePage() {
   }));
 
   const Map = dynamic(
-    () => import("../components/map"), // replace '@components/map' with your component's location
+    () => import("./components/map2"), // replace '@components/map' with your component's location
     { ssr: false } // This line is important. It's what prevents server-side render
   );
 
@@ -43,7 +45,9 @@ export function HomePage() {
     <>
       <GridColums>
         <Sidebar />
-        <Map mapData={data} />
+        <RecoilRoot>
+          <Map mapData={data} />
+        </RecoilRoot>
       </GridColums>
     </>
   );

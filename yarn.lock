@@ -864,6 +864,16 @@
   resolved "https://registry.yarnpkg.com/@josephg/resolvable/-/resolvable-1.0.1.tgz#69bc4db754d79e1a2f17a650d3466e038d94a5eb"
   integrity sha512-CtzORUwWTTOTqfVtHaKRJ0I1kNQd1bpn3sUh8I3nJDVY+5/M/Oe1DnEWzPQvqq/xPIIkzzzIP7mfCoAjFRvDhg==
 
+"@mapbox/corslite@0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@mapbox/corslite/-/corslite-0.0.7.tgz#29f5b6a188ba946e514bdf0b6401ed4fbe13a39e"
+  integrity sha1-KfW2oYi6lG5RS98LZAHtT74To54=
+
+"@mapbox/polyline@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@mapbox/polyline/-/polyline-0.2.0.tgz#6e25980744aa22331f94b645a542c02d3fcfee97"
+  integrity sha1-biWYB0SqIjMflLZFpULALT/P7pc=
+
 "@material-ui/icons@^4.11.2":
   version "4.11.2"
   resolved "https://registry.yarnpkg.com/@material-ui/icons/-/icons-4.11.2.tgz#b3a7353266519cd743b6461ae9fdfcb1b25eb4c5"
@@ -1498,7 +1508,14 @@
   resolved "https://registry.npmjs.org/@types/json5/-/json5-0.0.29.tgz"
   integrity sha1-7ihweulOEdK4J7y+UnC86n8+ce4=
 
-"@types/leaflet@^1.7.9":
+"@types/leaflet-routing-machine@^3.2.3":
+  version "3.2.3"
+  resolved "https://registry.yarnpkg.com/@types/leaflet-routing-machine/-/leaflet-routing-machine-3.2.3.tgz#73a2b4c67363f8d9c6187bb9b0ffb9b0594f4e81"
+  integrity sha512-otFJqBO96AUxanwQAQfP+6fot91XS6FML+0o9O6z+0WveTuQO13Hs32G/TMWPE1q57us+vJysNlSWkhBPDh1jQ==
+  dependencies:
+    "@types/leaflet" "*"
+
+"@types/leaflet@*", "@types/leaflet@^1.7.9":
   version "1.7.9"
   resolved "https://registry.yarnpkg.com/@types/leaflet/-/leaflet-1.7.9.tgz#7993d34f14cfa88c45b3d490daba39a3a1be9a2b"
   integrity sha512-H8vPgD49HKzqM41ArHGZM70g/tfhp8W+JcPxfnF+5H/Xvp+xiP+KQOUNWU8U89fqS1Jj3cpRY/+nbnaHFzwnFA==
@@ -3739,6 +3756,11 @@ growly@^1.3.0:
   resolved "https://registry.yarnpkg.com/growly/-/growly-1.3.0.tgz#f10748cbe76af964b7c96c93c6bcc28af120c081"
   integrity sha1-8QdIy+dq+WS3yWyTxrzCivEgwIE=
 
+hamt_plus@1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/hamt_plus/-/hamt_plus-1.0.2.tgz#e21c252968c7e33b20f6a1b094cd85787a265601"
+  integrity sha1-4hwlKWjH4zsg9qGwlM2FeHomVgE=
+
 har-schema@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/har-schema/-/har-schema-2.0.0.tgz"
@@ -4525,6 +4547,15 @@ leaflet-geosearch@^3.6.0:
   optionalDependencies:
     leaflet "^1.6.0"
 
+leaflet-routing-machine@^3.2.12:
+  version "3.2.12"
+  resolved "https://registry.yarnpkg.com/leaflet-routing-machine/-/leaflet-routing-machine-3.2.12.tgz#9e4aef008321b0227cf894d829c3b4c1f13e4e13"
+  integrity sha512-HLde58G1YtD9xSIzZavJ6BPABZaV1hHeGst8ouhzuxmSC3s32NVtADT+njbIUMW1maHRCrsgTk/E4hz5QH7FrA==
+  dependencies:
+    "@mapbox/corslite" "0.0.7"
+    "@mapbox/polyline" "^0.2.0"
+    osrm-text-instructions "^0.13.2"
+
 leaflet@^1.6.0, leaflet@^1.7.1:
   version "1.7.1"
   resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.7.1.tgz#10d684916edfe1bf41d688a3b97127c0322a2a19"
@@ -5188,6 +5219,11 @@ osenv@^0.1.4:
     os-homedir "^1.0.0"
     os-tmpdir "^1.0.0"
 
+osrm-text-instructions@^0.13.2:
+  version "0.13.4"
+  resolved "https://registry.yarnpkg.com/osrm-text-instructions/-/osrm-text-instructions-0.13.4.tgz#78bedabd84cbcabce9c9fd0fbb6b0fd9f06c7f9f"
+  integrity sha512-ge4ZTIetMQKAHKq2MwWf83ntzdJN20ndRKRaVNoZ3SkDkBNO99Qddz7r6+hrVx38I+ih6Rk5T1yslczAB6Q9Pg==
+
 p-cancelable@^0.4.0:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/p-cancelable/-/p-cancelable-0.4.1.tgz#35f363d67d52081c8d9585e37bcceb7e0bbcb2a0"
@@ -5637,6 +5673,13 @@ readdirp@~3.6.0:
   integrity sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==
   dependencies:
     picomatch "^2.2.1"
+
+recoil@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/recoil/-/recoil-0.7.0.tgz#de19c6fb9816c172b0dae92cf8fe94c2c90a23ab"
+  integrity sha512-NYG79ZciSILFIu6Zo3aoqPOIU0Ok+dIwA9DM4NdxIx0tKXKenAZWxsalyRQyGVfxR3cVynsgVu7XCAdKNa957A==
+  dependencies:
+    hamt_plus "1.0.2"
 
 redeyed@~2.1.0:
   version "2.1.1"
