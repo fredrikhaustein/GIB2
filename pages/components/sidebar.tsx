@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { Button, TextField } from "@mui/material";
 import React from "react";
+import * as greenimage from "./image/Green_mountains_icon.png";
 
 const SidebarStyled = styled.div`
   display: flex;
@@ -15,16 +16,8 @@ const SidebarStyled = styled.div`
 export const Sidebar = () => {
   return (
     <SidebarStyled>
-      <TextField
-        id="outlined-basic"
-        label="Review"
-        variant="outlined"
-        style={{ marginTop: "5px" }}
-      />
-      <br />
-      <br />
-      <br />
-      <p>Info:</p>
+      <img src={greenimage} />
+      <p style={{ marginTop: "80px" }}>Info:</p>
       <p>Galdhøpiggen er norges høyeste fjell med en høyde på 2469 moh</p>
       <br />
       <p>
@@ -32,6 +25,12 @@ export const Sidebar = () => {
         alternativene:
       </p>
       <li>Rute 1</li>
+      <TextField
+        id="outlined-basic"
+        label="Review"
+        variant="outlined"
+        style={{}}
+      />
       <li>Rute 2</li>
       <li>Rute 3</li>
       <li>Rute 4</li>
