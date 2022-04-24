@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { gql, useQuery } from "@apollo/client";
 import { Mountain } from "../src/types";
 import { RecoilRoot } from "recoil";
+import { BrowserRouter } from "react-router-dom";
 
 const GridColums = styled.div`
   display: grid;
@@ -42,11 +43,13 @@ function App() {
   if (error) return <p>Oh no... {error.message}</p>;
 
   return (
-    <AppContainer style={{ height: "700px" }}>
-      <GridColums>
-        <Sidebar />
-      </GridColums>
-    </AppContainer>
+    <BrowserRouter>
+      <AppContainer style={{ height: "700px" }}>
+        <GridColums>
+          <Sidebar />
+        </GridColums>
+      </AppContainer>
+    </BrowserRouter>
   );
 }
 
