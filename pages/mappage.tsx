@@ -6,6 +6,7 @@ import styled from "@emotion/styled";
 import React, { useEffect, useRef } from "react";
 import "leaflet/dist/leaflet.css";
 import { RecoilRoot } from "recoil";
+import Header from "./components/header";
 
 const AllMountainsQuery = gql`
   query {
@@ -23,7 +24,7 @@ const AllMountainsQuery = gql`
 const GridColums = styled.div`
   display: grid;
   grid-template-columns: 15% 85%;
-  background-color: #ffffff;
+  background-color: #add8e6;
   height: 700px;
 `;
 
@@ -43,6 +44,7 @@ export function HomePage() {
 
   return (
     <>
+      <Header />
       <GridColums>
         <Sidebar />
         <RecoilRoot>
