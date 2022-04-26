@@ -102,7 +102,14 @@ const MountainMap = ({ mapData }) => {
         <Marker position={mountainLatlng}>
           <Popup>{mountainInfo}</Popup>
         </Marker>
-        <Routing sourceCity={latlngHouse} destinationCity={latlngMountain} />
+        {Object.keys(latlngHouse.lat).length >= 2 &&
+          Object.keys(latlngMountain.lat).length >= 2 && (
+            <Routing
+              sourceCity={latlngHouse}
+              destinationCity={latlngMountain}
+            />
+          )}
+        {/* <Routing sourceCity={latlngHouse} destinationCity={latlngMountain} /> */}
       </MapContainer>
     </GridRow>
   );

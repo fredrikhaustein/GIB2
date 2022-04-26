@@ -12,4 +12,4 @@ const fileDownload = () => {
   );
 };
 
-export default fileDownload();
+export default fileDownload;

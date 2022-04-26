@@ -25,7 +25,12 @@ const GridColums = styled.div`
   display: grid;
   grid-template-columns: 15% 85%;
   background-color: #add8e6;
-  height: 700px;
+  height: 100%;
+`;
+
+const GridRow = styled.div`
+  display:grid
+  grid-template-rows: 15% 85%;
 `;
 
 export function HomePage() {
@@ -38,12 +43,12 @@ export function HomePage() {
   }));
 
   const Map = dynamic(
-    () => import("./components/map2"), // replace '@components/map' with your component's location
+    () => import("./components/map"), // replace '@components/map' with your component's location
     { ssr: false } // This line is important. It's what prevents server-side render
   );
 
   return (
-    <>
+    <div style={{ height: "100%" }}>
       <Header />
       <GridColums>
         <Sidebar />
@@ -51,7 +56,7 @@ export function HomePage() {
           <Map mapData={data} />
         </RecoilRoot>
       </GridColums>
-    </>
+    </div>
   );
 }
 export default HomePage;

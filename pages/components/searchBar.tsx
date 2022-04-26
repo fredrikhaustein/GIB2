@@ -42,6 +42,7 @@ export default function searchBar() {
           );
           setHouseLatlngState(latlng);
         }
+        console.log("House lat lng state");
         console.log(houseLatlngState);
       } catch (err) {
         if (err.response) {
@@ -95,7 +96,7 @@ export default function searchBar() {
         includeInputInList
         filterSelectedOptions
         value={value}
-        sx={{ width: "100%" }}
+        sx={{ width: "100%", height: "100%" }}
         onInputChange={(event, newInputValue) => {
           setInputValue(newInputValue);
         }}

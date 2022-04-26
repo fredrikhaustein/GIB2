@@ -72,7 +72,6 @@ export default function Home() {
           style={{
             marginLeft: "650px",
             fontSize: "40px",
-            // backgroundColor: "#ffffff",
             borderRadius: "7px",
             borderColor: "black",
             borderWidth: "3px",

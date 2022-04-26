@@ -19,12 +19,16 @@ const Routing = ({ sourceCity, destinationCity }) => {
   useEffect(() => {
     if (!map) return;
     console.log("Useeffect");
+    console.log("source");
+    console.log(sourceCity);
+    console.log("destination");
+    console.log(destinationCity);
     const routingControl = L.Routing.control({
       waypoints: [
-        L.latLng(63.40427593395422, 10.402082984735312),
-        L.latLng(61.651164062, 8.552664456),
-        // L.latLng(sourceCity.lat, sourceCity.lng),
-        // L.latLng(destinationCity.lat, destinationCity.lng),
+        // L.latLng(63.40427593395422, 10.402082984735312),
+        // L.latLng(61.651164062, 8.552664456),
+        L.latLng(sourceCity.lat, sourceCity.lng),
+        L.latLng(destinationCity.lat, destinationCity.lng),
       ],
       showAlternatives: false,
       addWaypoints: false,

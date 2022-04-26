@@ -1,6 +1,8 @@
 import styled from "@emotion/styled";
 import { Button, TextField } from "@mui/material";
 import React from "react";
+import { RecoilRoot, RecoilState } from "recoil";
+import FileDownload from "./fileDownload";
 
 const SidebarStyled = styled.div`
   display: flex;
@@ -21,12 +23,8 @@ export const Sidebar = () => {
         variant="outlined"
         style={{ marginTop: "5px" }}
       />
-      <br />
-      <br />
-      <br />
-      <p>Info:</p>
+      {/* <p>Info:</p>
       <p>Galdhøpiggen er norges høyeste fjell med en høyde på 2469 moh</p>
-      <br />
       <p>
         Det er 5 ulike ruter man kan gå til toppen. Under finner du
         alternativene:
@@ -35,8 +33,7 @@ export const Sidebar = () => {
       <li>Rute 2</li>
       <li>Rute 3</li>
       <li>Rute 4</li>
-      <li>Rute 5</li>
-      <br />
+      <li>Rute 5</li> */}
     </SidebarStyled>
   );
 };

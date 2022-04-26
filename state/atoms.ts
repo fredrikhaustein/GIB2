@@ -8,5 +8,5 @@ export const latlngHouseState = atom({
 
 export const latlngMountainState = atom({
   key: "LatLngMountain", // unique ID (with respect to other atoms/selectors)
-  default: L.latLng(61.65122, 8.55748), // default value (aka initial value)
+  default: L.latLng(0, 0), // default value (aka initial value)
 });

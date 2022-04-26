@@ -1,36 +1,40 @@
-import L from "leaflet";
-import { createControlComponent } from "@react-leaflet/core";
-import "leaflet-routing-machine";
-import { latlngHouseState, latlngMountainState } from "../../state/atoms";
-import { useRecoilValue } from "recoil";
 import { useEffect } from "react";
+import L from "leaflet";
+import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
+import "leaflet-routing-machine";
+import { useMap } from "react-leaflet";
 
-const createRoutineMachineLayer: any = (props) => {
-  const latlngHouse = useRecoilValue(latlngHouseState);
-  const latlngMountain = useRecoilValue(latlngMountainState);
+L.Marker.prototype.options.icon = L.icon({
+  iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
+});
+
+const Routing = ({ sourceCity, destinationCity }) => {
+  const map = useMap();
+
+  const sourceHouse = sourceCity[0];
+
+  console.log("Map:", destinationCity);
 
   useEffect(() => {
-    if (!latlngHouse || !latlngMountain) return;
-    const instance = L.Routing.control({
-      waypoints: [
-        L.latLng(63.40427593395422, 10.402082984735312),
-        L.latLng(61.651164062, 8.552664456),
-        // L.latLng(latlngHouse.lat, latlngHouse.lng),
-        // L.latLng(latlngMountain.lat, latlngMountain.lng),
-      ],
+    if (!map) return;
+    if (!sourceCity && !destinationCity) return;
 
-      show: false,
-      addWaypoints: false,
+    const routingControl = L.Routing.control({
+      waypoints: [sourceHouse, destinationCity],
       routeWhileDragging: true,
+      show: true,
+      showAlternatives: true,
+      addWaypoints: true,
       fitSelectedRoutes: true,
-      showAlternatives: false,
-    });
+    }).addTo(map);
+
     return () => {
-      instance;
+      if (!routingControl) return;
+      map.removeControl(routingControl);
     };
-  }, [latlngHouse]);
+  }, [map, sourceCity, destinationCity]);
+
+  return null;
 };
 
-const RoutingMachine = createControlComponent(createRoutineMachineLayer);
-
-export default RoutingMachine;
+export default Routing;

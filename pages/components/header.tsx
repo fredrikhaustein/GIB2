@@ -24,7 +24,7 @@ export const Header = () => {
       <AppBar position="static">
         <Toolbar style={{ backgroundColor: "slategrey" }}>
           <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
-            Mountain app
+            The mountain guide Norway
           </Typography>
           <Typography
             variant="h6"

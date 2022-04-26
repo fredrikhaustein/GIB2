@@ -1,14 +1,17 @@
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { Latlng, Mountain } from "../../src/types";
-import { useState } from "react";
-import { latLng, LatLngTuple } from "leaflet";
+import { useEffect, useMemo, useState } from "react";
+import { latLng, LatLngTuple, Point } from "leaflet";
 import React from "react";
 import styled from "@emotion/styled";
 import SearchBar from "./searchBar";
 import * as L from "leaflet";
-import CreateRute from "./createRute";
-import RoutingMachine from "./Routing";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { latlngMountainState, latlngHouseState } from "../../state/atoms";
+import Routing from "./Routing";
+import api from "./api/posts";
+import { Autocomplete, Paper, TextField } from "@mui/material";
 
 const GridRow = styled.div`
   display: grid;
@@ -16,14 +19,12 @@ const GridRow = styled.div`
   outline-color: #474747;
   border-radius: ;
   border-color: black;
-  height: 700px;
 `;
 
 const GridColums = styled.div`
   display: grid;
   grid-template-columns: 50% 50%;
   background-color: #ffffff;
-  margin: 10px;
 `;
 
 const MountainMap = ({ mapData }) => {
@@ -38,75 +39,188 @@ const MountainMap = ({ mapData }) => {
     })
   );
 
-  // L.Marker.prototype.options.icon = L.icon({
-  //   iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
-  //   iconSize: [25, 41],
-  //   iconAnchor: [10, 41],
-  //   popupAnchor: [2, -40],
-  // });
-
   let DefaultIcon = L.icon({
     iconSize: [25, 41],
-    iconAnchor: [10, 41],
+    iconAnchor: [12, 41],
     popupAnchor: [2, -40],
     iconUrl: "https://unpkg.com/leaflet@1.6/dist/images/marker-icon.png",
   });
 
   L.Marker.prototype.options.icon = DefaultIcon;
-
-  const [map, setMap] = useState(null);
-  const [latlng, setlatlng] = useState(L.latLng(10, 10));
-  // const [mountainLatlngState, setMountainLatlngState] =
-  //   useRecoilState(latlngMountainState);
-  const [latlngMarker, setLatLngMarker] = useState<LatLngTuple>([50, 10]);
-  const [mountainInfo, setMountainInfo] = useState("");
-  async function handleMapButton() {
-    await map.panTo(latLng(10, 12));
-  }
   const findMountain = (fid: number) => {
-    const mountain = mapDataArray.find((e) => e.ogc_fid == fid);
-    setlatlng(L.latLng(mountain.lat, mountain.lon));
-    return mountain;
+    return mapDataArray.find((e) => e.ogc_fid == fid);
   };
 
   const biggestMountain: Mountain = findMountain(1);
 
+  const [map, setMap] = useState(null);
+  const [mountainLatlng, setMountainLatlng] =
+    useRecoilState(latlngMountainState);
+  const [mountainStateLatlng, setMountainStateLatlng] = useState(
+    L.latLng(0, 0)
+  );
+  const [mountainInfo, setMountainInfo] = useState("");
+
+  // Address states
+  const [options, setOptions] = useState([]);
+  const [houselatLng, setHouse] = useState("");
+  const [inputValue, setInputValue] = useState("");
+
+  // UseEffect
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await api.get(
+          `https://ws.geonorge.no/adresser/v1/sok?side=0&treffPerSide=10&asciiKompatibel=true&utkoordsys=4258&sok=${inputValue}`
+        );
+        const adresser = response.data.adresser;
+        setOptions(adresser.map((a) => `${a.adressetekst}, ${a.kommunenavn}`));
+        if (houselatLng) {
+          const latlng = adresser.map((a) =>
+            L.latLng(a.representasjonspunkt.lat, a.representasjonspunkt.lon)
+          );
+          setHouse(latlng);
+        }
+        console.log("Dette er value " + houselatLng);
+      } catch (err) {
+        if (err.response) {
+          console.log(err.response.data);
+        } else {
+          console.log(`error is ${err.message}`);
+        }
+      }
+    };
+    fetchData();
+  }, [inputValue]);
+
+  // UseMemo
+  useMemo(() => {
+    const fetchAdress = async () => {
+      try {
+        const response = await api.get(
+          `https://ws.geonorge.no/adresser/v1/sok?side=0&treffPerSide=10&asciiKompatibel=true&utkoordsys=4258&sok=${inputValue}`
+        );
+        const adresser = response.data.adresser;
+        console.log("USEMEMO");
+        console.log(adresser);
+        if (adresser) {
+          const latlng = adresser.map((a) =>
+            L.latLng(a.representasjonspunkt.lat, a.representasjonspunkt.lon)
+          );
+          setHouse(latlng);
+        }
+      } catch (err) {
+        if (err.response) {
+          console.log(err.response.data);
+        } else {
+          console.log(`error is ${err.message}`);
+        }
+      }
+    };
+    fetchAdress();
+  }, []);
+
+  async function handleMapButton(newMountain: Mountain) {
+    await map.panTo(latLng(newMountain.lat, newMountain.lon));
+  }
+
   const handleMountainChange = (e) => {
     const newMountain = findMountain(e.target.value);
-    handleMapButton();
-    setLatLngMarker([newMountain.lat, newMountain.lon]);
+    handleMapButton(newMountain);
+    setMountainLatlng(L.latLng(newMountain.lat, newMountain.lon));
+    setMountainStateLatlng(L.latLng(newMountain.lat, newMountain.lon));
+    console.log("Her er state mountain" + mountainLatlng);
     setMountainInfo(`${newMountain.navn} er ${newMountain.h_yde} MOH`);
   };
 
   return (
     <GridRow>
       <GridColums>
-        <select onChange={handleMountainChange}>
+        <select
+          onChange={handleMountainChange}
+          style={{
+            height: "inherit",
+            borderRadius: "0px",
+            border: "solid",
+            borderColor: "black",
+            backgroundColor: "#add8e6",
+          }}
+          placeholder="Fjell"
+        >
           {mapDataArray.map((mountain: Mountain) => (
-            <option value={mountain.ogc_fid}>{mountain.navn}</option>
+            <option
+              value={mountain.ogc_fid}
+              key={mountain.ogc_fid}
+              placeholder="Fjell"
+              style={{ borderColor: "grey" }}
+            >
+              {mountain.navn}
+            </option>
           ))}
         </select>
-        <SearchBar />
+        <Autocomplete
+          id="combo-box-demo"
+          placeholder="Adresse"
+          options={options}
+          onChange={(event: any, newValue: string) => {
+            setHouse(newValue);
+            console.log(houselatLng);
+          }}
+          size="medium"
+          PaperComponent={({ children }) => (
+            <Paper
+              style={{ background: "#add8e6", backgroundColor: "#add8e6" }}
+              elevation={10}
+            >
+              {children}
+            </Paper>
+          )}
+          onInputChange={(event, newInputValue) => {
+            setInputValue(newInputValue);
+          }}
+          style={{
+            width: "inherit",
+            paddingBottom: "0%",
+            height: "inherit",
+            backgroundColor: "#add8e6",
+          }}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              placeholder="Adresse"
+              variant="outlined"
+              InputLabelProps={{
+                style: { color: "white" },
+              }}
+              style={{
+                height: "100%",
+                display: "grid",
+                borderRadius: "0px",
+              }}
+            />
+          )}
+        />
       </GridColums>
-      {/* <Button>heheh</Button> */}
       <MapContainer
         center={[biggestMountain.lat, biggestMountain.lon]}
         zoom={13}
-        scrollWheelZoom={true}
+        scrollWheelZoom={false}
         style={{ height: "100%", width: "100%" }}
         whenCreated={setMap}
       >
         <TileLayer
-          url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}"
-          attribution="Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri"
+          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {/*
-         *<UpdateMapCenter newMountain={newMountain} />
-         */}
-        <Marker position={latlngMarker}>
-          <Popup>{mountainInfo}</Popup>
-        </Marker>
-        <RoutingMachine />
+        {mountainLatlng && !houselatLng && (
+          <Marker position={mountainLatlng}>
+            <Popup>{mountainInfo}</Popup>
+          </Marker>
+        )}
+        {houselatLng && mountainLatlng && (
+          <Routing sourceCity={houselatLng} destinationCity={mountainLatlng} />
+        )}
       </MapContainer>
     </GridRow>
   );
