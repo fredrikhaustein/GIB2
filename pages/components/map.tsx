@@ -56,6 +56,7 @@ const MountainMap = ({ mapData }) => {
   const [map, setMap] = useState(null);
   const [mountainLatlng, setMountainLatlng] =
     useRecoilState(latlngMountainState);
+
   const [mountainStateLatlng, setMountainStateLatlng] = useState(
     L.latLng(0, 0)
   );
@@ -63,8 +64,10 @@ const MountainMap = ({ mapData }) => {
 
   // Address states
   const [options, setOptions] = useState([]);
-  const [houselatLng, setHouse] = useState("");
+  const [houselatLng, setHouse] = useState();
   const [inputValue, setInputValue] = useState("");
+  const [clickValue, setClickValue] = useState("");
+  const [choosenValue, setChoosenValue] = useState("");
 
   // UseEffect
 
@@ -76,13 +79,15 @@ const MountainMap = ({ mapData }) => {
         );
         const adresser = response.data.adresser;
         setOptions(adresser.map((a) => `${a.adressetekst}, ${a.kommunenavn}`));
-        if (houselatLng) {
-          const latlng = adresser.map((a) =>
-            L.latLng(a.representasjonspunkt.lat, a.representasjonspunkt.lon)
-          );
-          setHouse(latlng);
-        }
-        console.log("Dette er value " + houselatLng);
+        // if (clickValue) {
+        //   const latlng = adresser.map((a) =>
+        //     L.latLng(a.representasjonspunkt.lat, a.representasjonspunkt.lon)
+        //   );
+        //   setHouse(latlng);
+        //   console.log("Dette er house latlng");
+        //   console.log(houselatLng);
+        // }
+        // console.log("Dette er value " + houselatLng);
       } catch (err) {
         if (err.response) {
           console.log(err.response.data);
@@ -99,16 +104,18 @@ const MountainMap = ({ mapData }) => {
     const fetchAdress = async () => {
       try {
         const response = await api.get(
-          `https://ws.geonorge.no/adresser/v1/sok?side=0&treffPerSide=10&asciiKompatibel=true&utkoordsys=4258&sok=${inputValue}`
+          `https://ws.geonorge.no/adresser/v1/sok?side=0&treffPerSide=10&asciiKompatibel=true&utkoordsys=4258&sok=${choosenValue}`
         );
         const adresser = response.data.adresser;
         console.log("USEMEMO");
         console.log(adresser);
-        if (adresser) {
+        if (choosenValue) {
           const latlng = adresser.map((a) =>
             L.latLng(a.representasjonspunkt.lat, a.representasjonspunkt.lon)
           );
           setHouse(latlng);
+          console.log("Dette er clickvalue");
+          console.log(houselatLng);
         }
       } catch (err) {
         if (err.response) {
@@ -119,7 +126,7 @@ const MountainMap = ({ mapData }) => {
       }
     };
     fetchAdress();
-  }, []);
+  }, [choosenValue]);
 
   async function handleMapButton(newMountain: Mountain) {
     await map.panTo(latLng(newMountain.lat, newMountain.lon));
@@ -164,8 +171,12 @@ const MountainMap = ({ mapData }) => {
           placeholder="Adresse"
           options={options}
           onChange={(event: any, newValue: string) => {
-            setHouse(newValue);
-            console.log(houselatLng);
+            // setClickValue(newValue);
+            // console.log("Clickvalue");
+            // console.log(clickValue);
+            setChoosenValue(newValue);
+            console.log("New value");
+            console.log(choosenValue);
           }}
           size="medium"
           PaperComponent={({ children }) => (
@@ -188,6 +199,7 @@ const MountainMap = ({ mapData }) => {
           renderInput={(params) => (
             <TextField
               {...params}
+              onChange={({ target }) => setClickValue(target.value)}
               placeholder="Adresse"
               variant="outlined"
               InputLabelProps={{
@@ -213,13 +225,16 @@ const MountainMap = ({ mapData }) => {
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {mountainLatlng && !houselatLng && (
-          <Marker position={mountainLatlng}>
+        {mountainStateLatlng && !houselatLng && (
+          <Marker position={mountainStateLatlng}>
             <Popup>{mountainInfo}</Popup>
           </Marker>
         )}
-        {houselatLng && mountainLatlng && (
-          <Routing sourceCity={houselatLng} destinationCity={mountainLatlng} />
+        {houselatLng && mountainStateLatlng && (
+          <Routing
+            sourceCity={houselatLng}
+            destinationCity={mountainStateLatlng}
+          />
         )}
       </MapContainer>
     </GridRow>

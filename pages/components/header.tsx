@@ -23,8 +23,13 @@ export const Header = () => {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar style={{ backgroundColor: "slategrey" }}>
-          <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
-            The mountain guide Norway
+          <Typography
+            variant="h4"
+            component="div"
+            sx={{ flexGrow: 1 }}
+            style={{ fontFamily: "fantasy" }}
+          >
+            The Mountain Guide Norway
           </Typography>
           <Typography
             variant="h6"
@@ -32,7 +37,7 @@ export const Header = () => {
             style={{ marginRight: "60px" }}
           >
             <Link href="/">
-              <a>Home</a>
+              <a style={{ fontFamily: "fantasy" }}>Home</a>
             </Link>
           </Typography>
           <Typography
@@ -41,7 +46,7 @@ export const Header = () => {
             style={{ marginRight: "60px" }}
           >
             <Link href="/mappage">
-              <a>Map</a>
+              <a style={{ fontFamily: "fantasy" }}>Map</a>
             </Link>
           </Typography>
           <Typography
@@ -50,7 +55,7 @@ export const Header = () => {
             style={{ marginRight: "60px" }}
           >
             <Link href="/about">
-              <a>About</a>
+              <a style={{ fontFamily: "fantasy" }}>About</a>
             </Link>
           </Typography>
         </Toolbar>

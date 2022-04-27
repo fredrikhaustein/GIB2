@@ -66,15 +66,26 @@ export default function Home() {
   return (
     <>
       <Header />
-      <H1>The Mountain guide Norway</H1>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
       <Link href="/mappage">
         <a
           style={{
-            marginLeft: "650px",
-            fontSize: "40px",
-            borderRadius: "7px",
+            marginLeft: "610px",
+            fontSize: "60px",
+            borderRadius: "6px",
             borderColor: "black",
-            borderWidth: "3px",
+            borderWidth: "4px",
+            fontFamily: "fantasy",
           }}
         >
           Go to Map

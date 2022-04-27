@@ -13,14 +13,20 @@ const Routing = ({ sourceCity, destinationCity }) => {
 
   const sourceHouse = sourceCity[0];
 
-  console.log("Map:", destinationCity);
+  console.log("Destination:", destinationCity);
+  console.log("source", sourceHouse);
 
   useEffect(() => {
     if (!map) return;
     if (!sourceCity && !destinationCity) return;
 
     const routingControl = L.Routing.control({
-      waypoints: [sourceHouse, destinationCity],
+      waypoints: [
+        sourceHouse,
+        destinationCity,
+        // L.latLng(17.384, 78.4866),
+        // L.latLng(12.971, 77.5945),
+      ],
       routeWhileDragging: true,
       show: true,
       showAlternatives: true,
