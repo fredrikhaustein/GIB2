@@ -43,13 +43,11 @@ function App() {
   if (error) return <p>Oh no... {error.message}</p>;
 
   return (
-    <BrowserRouter>
-      <AppContainer style={{ height: "700px" }}>
-        <GridColums>
-          <Sidebar />
-        </GridColums>
-      </AppContainer>
-    </BrowserRouter>
+    <AppContainer style={{ height: "700px" }}>
+      <GridColums>
+        <Sidebar />
+      </GridColums>
+    </AppContainer>
   );
 }
 

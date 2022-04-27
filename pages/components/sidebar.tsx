@@ -1,8 +1,10 @@
 import styled from "@emotion/styled";
 import { Button, TextField } from "@mui/material";
 import React from "react";
-import { RecoilRoot, RecoilState } from "recoil";
+import { RecoilRoot, RecoilState, useRecoilValue } from "recoil";
 import FileDownload from "./fileDownload";
+import Link from "next/link";
+import { mountainNameState, latlngMountainState } from "../../state/atoms";
 
 const SidebarStyled = styled.div`
   display: flex;
@@ -15,6 +17,7 @@ const SidebarStyled = styled.div`
   margin: 10px;
 `;
 export const Sidebar = () => {
+  const mountainNameSkred = useRecoilValue(mountainNameState);
   return (
     <SidebarStyled>
       <TextField
@@ -23,6 +26,12 @@ export const Sidebar = () => {
         variant="outlined"
         style={{ marginTop: "5px" }}
       />
+      {/* <Link href="/skredvarsling">
+        <a style={{ border: "solid", marginLeft: "12px", marginTop: "10px" }}>
+          Skredvarsling {mountainNameSkred}
+        </a>
+      </Link> */}
+
       {/* <p>Info:</p>
       <p>Galdhøpiggen er norges høyeste fjell med en høyde på 2469 moh</p>
       <p>

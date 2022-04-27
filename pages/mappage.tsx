@@ -51,7 +51,9 @@ export function HomePage() {
     <div style={{ height: "100%" }}>
       <Header />
       <GridColums>
-        <Sidebar />
+        <RecoilRoot>
+          <Sidebar />
+        </RecoilRoot>
         <RecoilRoot>
           <Map mapData={data} />
         </RecoilRoot>

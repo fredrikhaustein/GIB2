@@ -1,6 +1,6 @@
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import { Latlng, Mountain } from "../../src/types";
+import { Mountain } from "../../src/types";
 import { useEffect, useMemo, useState } from "react";
 import { latLng, LatLngTuple, Point } from "leaflet";
 import React from "react";
@@ -8,7 +8,7 @@ import styled from "@emotion/styled";
 import SearchBar from "./searchBar";
 import * as L from "leaflet";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { latlngMountainState, latlngHouseState } from "../../state/atoms";
+import { latlngMountainState, mountainNameState } from "../../state/atoms";
 import Routing from "./Routing";
 import api from "./api/posts";
 import { Autocomplete, Paper, TextField } from "@mui/material";
@@ -54,12 +54,15 @@ const MountainMap = ({ mapData }) => {
   const biggestMountain: Mountain = findMountain(1);
 
   const [map, setMap] = useState(null);
-  const [mountainLatlng, setMountainLatlng] =
-    useRecoilState(latlngMountainState);
   const [mountainStateLatlng, setMountainStateLatlng] = useState(
     L.latLng(0, 0)
   );
   const [mountainInfo, setMountainInfo] = useState("");
+  //Recoil
+  const [mountainLatlngRecoil, setMountainLatlngRecoil] =
+    useRecoilState(latlngMountainState);
+  const [mountainNameRecoil, setMountainNameRecoil] =
+    useRecoilState(mountainNameState);
 
   // Address states
   const [options, setOptions] = useState([]);
@@ -128,10 +131,13 @@ const MountainMap = ({ mapData }) => {
   const handleMountainChange = (e) => {
     const newMountain = findMountain(e.target.value);
     handleMapButton(newMountain);
-    setMountainLatlng(L.latLng(newMountain.lat, newMountain.lon));
     setMountainStateLatlng(L.latLng(newMountain.lat, newMountain.lon));
-    console.log("Her er state mountain" + mountainLatlng);
     setMountainInfo(`${newMountain.navn} er ${newMountain.h_yde} MOH`);
+    //Recoil
+    setMountainLatlngRecoil(L.latLng(newMountain.lat, newMountain.lon));
+    console.log(mountainLatlngRecoil);
+    setMountainNameRecoil(newMountain.navn);
+    console.log(mountainNameRecoil);
   };
 
   return (
@@ -213,13 +219,16 @@ const MountainMap = ({ mapData }) => {
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {mountainLatlng && !houselatLng && (
-          <Marker position={mountainLatlng}>
+        {mountainStateLatlng && !houselatLng && (
+          <Marker position={mountainStateLatlng}>
             <Popup>{mountainInfo}</Popup>
           </Marker>
         )}
-        {houselatLng && mountainLatlng && (
-          <Routing sourceCity={houselatLng} destinationCity={mountainLatlng} />
+        {houselatLng && mountainStateLatlng && (
+          <Routing
+            sourceCity={houselatLng}
+            destinationCity={mountainStateLatlng}
+          />
         )}
       </MapContainer>
     </GridRow>
