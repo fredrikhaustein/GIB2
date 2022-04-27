@@ -52,9 +52,7 @@ export function HomePage() {
       <Header />
       <GridColums>
         <Sidebar />
-        <RecoilRoot>
-          <Map mapData={data} />
-        </RecoilRoot>
+        <Map mapData={data} />
       </GridColums>
     </div>
   );

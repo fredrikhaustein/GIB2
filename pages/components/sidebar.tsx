@@ -3,6 +3,7 @@ import { Button, TextField } from "@mui/material";
 import React from "react";
 import { RecoilRoot, RecoilState } from "recoil";
 import FileDownload from "./fileDownload";
+import Link from "next/link";
 
 const SidebarStyled = styled.div`
   display: flex;
@@ -17,6 +18,20 @@ const SidebarStyled = styled.div`
 export const Sidebar = () => {
   return (
     <SidebarStyled>
+      <Link href="/skredvarsling">
+        <a
+          style={{
+            fontFamily: "fantasy",
+            marginLeft: "7px",
+            border: "Solid",
+            padding: "1px",
+          }}
+        >
+          Få skredvarsling
+        </a>
+      </Link>
+      <br />
+      <br />
       <TextField
         id="outlined-basic"
         label="Review"

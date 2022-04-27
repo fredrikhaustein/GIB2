@@ -8,7 +8,11 @@ import styled from "@emotion/styled";
 import SearchBar from "./searchBar";
 import * as L from "leaflet";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { latlngMountainState, latlngHouseState } from "../../state/atoms";
+import {
+  latlngMountainState,
+  latlngHouseState,
+  mountainNameState,
+} from "../../state/atoms";
 import Routing from "./Routing";
 import api from "./api/posts";
 import { Autocomplete, Paper, TextField } from "@mui/material";
@@ -56,6 +60,8 @@ const MountainMap = ({ mapData }) => {
   const [map, setMap] = useState(null);
   const [mountainLatlng, setMountainLatlng] =
     useRecoilState(latlngMountainState);
+  const [mountainNameRecoil, setMountainNameRecoil] =
+    useRecoilState(mountainNameState);
 
   const [mountainStateLatlng, setMountainStateLatlng] = useState(
     L.latLng(0, 0)
@@ -139,6 +145,7 @@ const MountainMap = ({ mapData }) => {
     setMountainStateLatlng(L.latLng(newMountain.lat, newMountain.lon));
     console.log("Her er state mountain" + mountainLatlng);
     setMountainInfo(`${newMountain.navn} er ${newMountain.h_yde} MOH`);
+    setMountainNameRecoil(newMountain.navn);
   };
 
   return (
@@ -216,7 +223,7 @@ const MountainMap = ({ mapData }) => {
       </GridColums>
       <MapContainer
         center={[biggestMountain.lat, biggestMountain.lon]}
-        zoom={13}
+        zoom={6}
         scrollWheelZoom={false}
         style={{ height: "100%", width: "100%" }}
         whenCreated={setMap}
