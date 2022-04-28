@@ -16,6 +16,7 @@ import {
 import Routing from "./Routing";
 import api from "./api/posts";
 import { Autocomplete, Paper, TextField } from "@mui/material";
+import {gql} from "@apollo/client";
 
 const GridRow = styled.div`
   display: grid;
@@ -23,6 +24,17 @@ const GridRow = styled.div`
   outline-color: #474747;
   border-radius: ;
   border-color: black;
+`;
+
+const RoutesOnMountainQuery = gql`
+        query {
+                routes {
+                        route_id
+                        route_name
+                        gpx_link
+                        mountain_id
+                }
+        }
 `;
 
 const GridColums = styled.div`

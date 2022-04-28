@@ -15,6 +15,7 @@ const apolloServer = new ApolloServer({
 
 // code below unchanged
 const startServer = apolloServer.start();
+console.log("Hello I'm here");
 
 export default cors(async function handler(req, res) {
         if (req.method === "OPTIONS") {

@@ -14,6 +14,23 @@ model fjell_over_1000m {
   lat          Float?
   lon          Float?
   h_yde        Int?    @map("høyde")
+  route_urls      String[] 
+}
+
+model gpx_route {
+  route_id Int     @id @default(autoincrement())
+  route_name String?
+  gpx_link String
+  mountain_id Int
+}
+
+model user {
+          id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  email     String?  @unique
+  image     String?
+  role      Role     @default(USER)
 }
 
 enum Role {
