@@ -11,6 +11,17 @@ type Mountain {
   wkb_geometry: [Int]
 }
 
+type Mutation {
+  createRoute(gpx_link: String!, mountain: String!, route_name: String!): Route!
+}
+
 type Query {
   mountains: [Mountain]!
+}
+
+type Route {
+  gpx_link: String
+  mountain: String
+  route_id: Int
+  route_name: String
 }
