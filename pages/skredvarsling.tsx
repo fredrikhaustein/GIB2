@@ -12,8 +12,6 @@ interface IvarsomMelding {
   text: string;
 }
 
-var varsomMeldingArray = [];
-
 const Skredvarsling = () => {
   const latLngMountain = useRecoilValue(latlngMountainState);
   const mountainName = useRecoilValue(mountainNameState);

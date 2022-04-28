@@ -6,6 +6,8 @@ import styled from "@emotion/styled";
 import React, { useEffect, useRef } from "react";
 import "leaflet/dist/leaflet.css";
 import Header from "./components/header";
+import MapFilter from "./components/filtermountains";
+import { Slider } from "@mui/material";
 
 const AllMountainsQuery = gql`
   query {
@@ -22,14 +24,14 @@ const AllMountainsQuery = gql`
 
 const GridColums = styled.div`
   display: grid;
-  grid-template-columns: 15% 85%;
+  grid-template-columns: 0.1% 99.9%;
   background-color: #add8e6;
-  height: 100%;
+  height: 600px;
 `;
 
 const GridRow = styled.div`
   display:grid
-  grid-template-rows: 15% 85%;
+  grid-template-rows: 5% 95%;
 `;
 
 export function HomePage() {
@@ -37,21 +39,27 @@ export function HomePage() {
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Oh no... {error.message}</p>;
-  const mountainNames: string = data.mountains.map((mountain: Mountain) => ({
-    mountainName: mountain.navn,
-  }));
+  //   const mountainsdata: Mountain = data.mountains.map((mountain: Mountain) => ({
+  //     ogc_fid: mountain.ogc_fid,
+  //     h_yde: mountain.h_yde,
+  //     lat: mountain.lat,
+  //     lon: mountain.lon,
+  //     navn: mountain.navn,
+  //     wkb_geometry: mountain.wkb_geometry,
+  //   }));
+  //   console.log(mountainsdata);
 
   const Map = dynamic(
-    () => import("./components/map"), // replace '@components/map' with your component's location
+    () => import("./components/filtermountains"), // replace '@components/map' with your component's location
     { ssr: false } // This line is important. It's what prevents server-side render
   );
 
   return (
-    <div style={{ height: "100%" }}>
+    <div style={{ height: "600px" }}>
       <Header />
       <GridColums>
-        <Sidebar />
-        <Map mapData={data} />
+        <div style={{ height: "600px" }} />
+        <Map mountaindata={data} />
       </GridColums>
     </div>
   );

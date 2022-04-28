@@ -22,14 +22,13 @@ const Routing = ({ sourceCity, destinationCity }) => {
 
     const routingControl = L.Routing.control({
       waypoints: [
-        sourceHouse,
-        destinationCity,
-        // L.latLng(17.384, 78.4866),
-        // L.latLng(12.971, 77.5945),
+        // sourceHouse,
+        // destinationCity,
+        L.latLng(63.79693743428234, 11.492379845753343),
+        L.latLng(61.46367, 7.88246),
       ],
       routeWhileDragging: false,
       show: true,
-      autoRoute: false,
       showAlternatives: true,
       addWaypoints: true,
       fitSelectedRoutes: true,

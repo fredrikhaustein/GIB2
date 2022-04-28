@@ -54,6 +54,15 @@ export const Header = () => {
             component="div"
             style={{ marginRight: "60px" }}
           >
+            <Link href="/mountainfilter">
+              <a style={{ fontFamily: "fantasy" }}>Filter Mountains</a>
+            </Link>
+          </Typography>
+          <Typography
+            variant="h6"
+            component="div"
+            style={{ marginRight: "60px" }}
+          >
             <Link href="/about">
               <a style={{ fontFamily: "fantasy" }}>About</a>
             </Link>

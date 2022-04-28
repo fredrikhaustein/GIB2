@@ -77,11 +77,13 @@ export default function Home() {
       <br />
       <br />
       <br />
+      <br />
+      <br />
       <Link href="/mappage">
         <a
           style={{
-            marginLeft: "610px",
-            fontSize: "60px",
+            marginLeft: "630px",
+            fontSize: "50px",
             borderRadius: "6px",
             borderColor: "black",
             borderWidth: "4px",
@@ -89,6 +91,22 @@ export default function Home() {
           }}
         >
           Go to Map
+        </a>
+      </Link>
+      <br />
+      <br />
+      <Link href={{ pathname: "/upload", query: data }}>
+        <a
+          style={{
+            marginLeft: "630px",
+            fontSize: "50px",
+            borderRadius: "6px",
+            borderColor: "black",
+            borderWidth: "4px",
+            fontFamily: "fantasy",
+          }}
+        >
+          Upload file
         </a>
       </Link>
       <Picture />
