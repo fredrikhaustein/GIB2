@@ -1,18 +1,15 @@
 import "../styles/global.css";
 import { ApolloProvider } from "@apollo/client";
 import apolloClient from "../lib/apollo";
-import { UserProvider } from "@auth0/nextjs-auth0";
-import Layout from "../components/Layout";
+import { RecoilRoot } from "recoil";
 
 function MyApp({ Component, pageProps }) {
   return (
-    <UserProvider>
-      <ApolloProvider client={apolloClient}>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </ApolloProvider>
-    </UserProvider>
+    <ApolloProvider client={apolloClient}>
+      <RecoilRoot>
+        <Component {...pageProps} />
+      </RecoilRoot>
+    </ApolloProvider>
   );
 }
 
