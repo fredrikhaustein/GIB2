@@ -66,18 +66,47 @@ export default function Home() {
   return (
     <>
       <Header />
-      <H1>The Mountain guide Norway</H1>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
       <Link href="/mappage">
         <a
           style={{
-            marginLeft: "650px",
-            fontSize: "40px",
-            borderRadius: "7px",
+            marginLeft: "630px",
+            fontSize: "50px",
+            borderRadius: "6px",
             borderColor: "black",
-            borderWidth: "3px",
+            borderWidth: "4px",
+            fontFamily: "fantasy",
           }}
         >
           Go to Map
+        </a>
+      </Link>
+      <br />
+      <br />
+      <Link href={{ pathname: "/upload", query: data }}>
+        <a
+          style={{
+            marginLeft: "630px",
+            fontSize: "50px",
+            borderRadius: "6px",
+            borderColor: "black",
+            borderWidth: "4px",
+            fontFamily: "fantasy",
+          }}
+        >
+          Upload file
         </a>
       </Link>
       <Picture />
