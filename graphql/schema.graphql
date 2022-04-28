@@ -7,21 +7,23 @@ type Mountain {
   lat: Float
   lon: Float
   navn: String
-  ogc_fid: String
+  ogc_fid: Int
+  route_urls: [String]
   wkb_geometry: [Int]
 }
 
 type Mutation {
-  createRoute(gpx_link: String!, mountain: String!, route_name: String!): Route!
+  createRoute(gpx_link: String!, mountain_id: Int!, route_name: String!): Route!
 }
 
 type Query {
   mountains: [Mountain]!
+  route: [Route]!
 }
 
 type Route {
   gpx_link: String
-  mountain: String
+  mountain_id: Int
   route_id: Int
   route_name: String
 }

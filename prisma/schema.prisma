@@ -14,14 +14,14 @@ model fjell_over_1000m {
   lat          Float?
   lon          Float?
   h_yde        Int?    @map("høyde")
-  routes       gpx_route[]
+  route_urls      String[] 
 }
 
 model gpx_route {
-  route_id String @id @default(uuid())
+  route_id Int     @id @default(autoincrement())
   route_name String?
   gpx_link String
-  mountain fjell_over_1000m[]
+  mountain_id Int
 }
 
 model user {
