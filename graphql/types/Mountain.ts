@@ -24,3 +24,19 @@ export const MountainsQuery = extendType({
                 });
         },
 });
+
+export const RoutesOnMountain = extendType({
+        type: "Query",
+        definition(t) {
+                t.nonNull.list.field("routes", {
+                        type: "Route",
+                        resolve(_parent, _args, ctx) {
+                                return ctx.prisma.gpx_route.findMany({
+                                        where: {
+                                                mountain_id: args.mountain_di
+                                        }
+                                });
+                        },
+                });
+        },
+});
