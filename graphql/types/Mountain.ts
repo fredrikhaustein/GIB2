@@ -1,5 +1,5 @@
 // /graphql/types/Mountain.ts
-import { objectType, extendType } from "nexus";
+import { objectType, extendType, nonNull, intArg, stringArg } from "nexus";
 
 export const Mountain = objectType({
         name: "Mountain",
@@ -25,16 +25,25 @@ export const MountainsQuery = extendType({
         },
 });
 
-export const RoutesOnMountain = extendType({
-        type: "Query",
+export const RouteLinkAdd = extendType({
+        type: "Mutation",
         definition(t) {
-                t.nonNull.list.field("routes", {
-                        type: "Route",
-                        resolve(_parent, _args, ctx) {
-                                return ctx.prisma.gpx_route.findMany({
+                t.nonNull.field("routeAdd", {
+                        type: "Mountain",
+                        args: {
+                                gpx_link: nonNull(stringArg()), // 2
+                                mountain_id: nonNull(intArg()),
+                        },
+                        resolve(_parent, args, ctx) {
+                                return ctx.prisma.fjell_over_1000m.update({
                                         where: {
-                                                mountain_id: args.mountain_di
-                                        }
+                                                ogc_fid: args.mountain_id,
+                                        },
+                                        data: {
+                                                route_urls: {
+                                                        push: args.gpx_link,
+                                                },
+                                        },
                                 });
                         },
                 });
