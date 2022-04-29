@@ -1,4 +1,4 @@
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import { MapContainer, Marker, Popup, TileLayer, Circle } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { Latlng, Mountain } from "../../src/types";
 import { useEffect, useMemo, useState } from "react";
@@ -12,6 +12,8 @@ import {
   latlngMountainState,
   latlngHouseState,
   mountainNameState,
+  circleRadiusState,
+  cirlceFilterState,
 } from "../../state/atoms";
 import Routing from "./Routing";
 import api from "./api/posts";
@@ -30,6 +32,68 @@ const GridColums = styled.div`
   grid-template-columns: 50% 50%;
   background-color: #ffffff;
 `;
+
+const iconFilter = L.icon({
+  iconSize: [25, 41],
+  iconAnchor: [10, 41],
+  popupAnchor: [2, -40],
+  iconUrl: "https://unpkg.com/leaflet@1.6/dist/images/marker-icon.png",
+});
+
+function MultipleMarkers({ mountainData, radiusValue, houseLatlngValue }) {
+  const decimalDegreeLat = houseLatlngValue.lat * (Math.PI / 180);
+  const decimalDegreeLng = houseLatlngValue.lng * (Math.PI / 180);
+  console.log(mountainData);
+  console.log(decimalDegreeLat);
+  console.log(decimalDegreeLng);
+  var newMpuntainData: Array<Mountain> = [];
+
+  const [mountainLatlng, setMountainLatlng] =
+    useRecoilState(latlngMountainState);
+  const [mountainNameRecoil, setMountainNameRecoil] =
+    useRecoilState(mountainNameState);
+
+  mountainData.mountains.forEach((e) => {
+    const p = 0.017453292519943295; // Math.PI / 180
+    if (
+      12742 *
+        Math.asin(
+          Math.sqrt(
+            0.5 -
+              Math.cos((e.lat - houseLatlngValue.lat) * p) / 2 +
+              (Math.cos(houseLatlngValue.lat * p) *
+                Math.cos(e.lat * p) *
+                (1 - Math.cos((e.lon - houseLatlngValue.lng) * p))) /
+                2
+          )
+        ) <=
+      radiusValue
+    ) {
+      console.log("hehehe");
+      newMpuntainData.push(e);
+    }
+  });
+
+  return newMpuntainData.map((m) => {
+    return (
+      <Marker
+        key={m.ogc_fid}
+        position={L.latLng(m.lat, m.lon)}
+        icon={iconFilter}
+        eventHandlers={{
+          click: (e) => {
+            setMountainLatlng(L.latLng(m.lat, m.lon));
+            setMountainNameRecoil(m.navn);
+          },
+        }}
+      >
+        <Popup>
+          {m.navn} er {m.h_yde} meter
+        </Popup>
+      </Marker>
+    );
+  });
+}
 
 const MountainMap = ({ mapData }) => {
   let mapDataArray: Array<Mountain> = mapData.mountains.map(
@@ -63,6 +127,9 @@ const MountainMap = ({ mapData }) => {
   const [mountainNameRecoil, setMountainNameRecoil] =
     useRecoilState(mountainNameState);
 
+  const circleRadius = useRecoilValue(circleRadiusState);
+  const showingAllMountains = useRecoilValue(cirlceFilterState);
+
   const [mountainStateLatlng, setMountainStateLatlng] = useState(
     L.latLng(0, 0)
   );
@@ -74,6 +141,7 @@ const MountainMap = ({ mapData }) => {
   const [inputValue, setInputValue] = useState("");
   const [clickValue, setClickValue] = useState("");
   const [choosenValue, setChoosenValue] = useState("");
+  const [circleMountainEvent, setCircleMountainEvent] = useState(true);
 
   // UseEffect
 
@@ -141,11 +209,11 @@ const MountainMap = ({ mapData }) => {
   const handleMountainChange = (e) => {
     const newMountain = findMountain(e.target.value);
     handleMapButton(newMountain);
-    setMountainLatlng(L.latLng(newMountain.lat, newMountain.lon));
+    // setMountainLatlng(L.latLng(newMountain.lat, newMountain.lon));
     setMountainStateLatlng(L.latLng(newMountain.lat, newMountain.lon));
     console.log("Her er state mountain" + mountainLatlng);
     setMountainInfo(`${newMountain.navn} er ${newMountain.h_yde} MOH`);
-    setMountainNameRecoil(newMountain.navn);
+    // setMountainNameRecoil(newMountain.navn);
   };
 
   return (
@@ -232,15 +300,22 @@ const MountainMap = ({ mapData }) => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {mountainStateLatlng && !houselatLng && (
+        {mountainStateLatlng && (
           <Marker position={mountainStateLatlng}>
             <Popup>{mountainInfo}</Popup>
           </Marker>
         )}
         {houselatLng && mountainStateLatlng && (
-          <Routing
-            sourceCity={houselatLng}
-            destinationCity={mountainStateLatlng}
+          <Routing sourceCity={houselatLng} destinationCity={mountainLatlng} />
+        )}
+        {houselatLng && circleMountainEvent && (
+          <Circle center={houselatLng[0]} radius={circleRadius * 1000} />
+        )}
+        {houselatLng && circleMountainEvent && (
+          <MultipleMarkers
+            mountainData={mapData}
+            radiusValue={circleRadius}
+            houseLatlngValue={houselatLng[0]}
           />
         )}
       </MapContainer>

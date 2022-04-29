@@ -66,28 +66,17 @@ export default function Home() {
   return (
     <>
       <Header />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <Link href="/mappage">
+      <Link href="/mappage" prefetch={false}>
         <a
           style={{
-            marginLeft: "630px",
             fontSize: "50px",
-            borderRadius: "6px",
             borderColor: "black",
-            borderWidth: "4px",
             fontFamily: "fantasy",
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "300px",
+            borderTop: "groove",
+            borderBottom: "groove",
           }}
         >
           Go to Map
@@ -98,12 +87,14 @@ export default function Home() {
       <Link href={{ pathname: "/upload", query: data }}>
         <a
           style={{
-            marginLeft: "630px",
             fontSize: "50px",
-            borderRadius: "6px",
-            borderColor: "black",
-            borderWidth: "4px",
             fontFamily: "fantasy",
+            display: "flex",
+            justifyContent: "center",
+            borderTop: "groove",
+            borderBottom: "groove",
+            borderTopColor: "black",
+            borderBottomColor: "black",
           }}
         >
           Upload file

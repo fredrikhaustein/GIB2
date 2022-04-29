@@ -15,3 +15,13 @@ export const mountainNameState = atom({
   key: "MountainName",
   default: "",
 });
+
+export const circleRadiusState = atom({
+  key: "CircleRadiusState",
+  default: 0,
+});
+
+export const cirlceFilterState = atom({
+  key: "CircleFilterState",
+  default: false,
+});
