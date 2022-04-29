@@ -53,6 +53,23 @@ function MultipleMarkers({ mountainData, radiusValue, houseLatlngValue }) {
   const [mountainNameRecoil, setMountainNameRecoil] =
     useRecoilState(mountainNameState);
 
+  var selectedRoute: any;
+
+  const handleOnClickMountainRoutes = (id, mountainDataRoutes) => {
+    mountainDataRoutes.mountains.forEach((e) => {
+      if (e.ogc_fid === 1947) {
+        console.log(e);
+        selectedRoute = e.route_urls;
+        console.log(selectedRoute);
+        return;
+      } else {
+        return;
+      }
+    });
+  };
+
+  console.log(selectedRoute);
+
   mountainData.mountains.forEach((e) => {
     const p = 0.017453292519943295; // Math.PI / 180
     if (
@@ -69,7 +86,6 @@ function MultipleMarkers({ mountainData, radiusValue, houseLatlngValue }) {
         ) <=
       radiusValue
     ) {
-      console.log("hehehe");
       newMpuntainData.push(e);
     }
   });
@@ -84,6 +100,7 @@ function MultipleMarkers({ mountainData, radiusValue, houseLatlngValue }) {
           click: (e) => {
             setMountainLatlng(L.latLng(m.lat, m.lon));
             setMountainNameRecoil(m.navn);
+            handleOnClickMountainRoutes(m.ogc_fid, mountainData);
           },
         }}
       >
@@ -104,6 +121,7 @@ const MountainMap = ({ mapData }) => {
       lon: mountain.lon,
       navn: mountain.navn,
       wkb_geometry: mountain.wkb_geometry,
+      route_urls: mountain.route_urls,
     })
   );
 
