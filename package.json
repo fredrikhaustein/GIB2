@@ -68,7 +68,7 @@
     "@emotion/styled": "^11.8.1",
     "@material-ui/icons": "^4.11.2",
     "@mui/material": "^5.4.3",
-    "@prisma/client": "^3.9.1",
+    "@prisma/client": "3.9.1",
     "@progress/kendo-licensing": "^1.2.2",
     "@progress/kendo-react-all": "^5.2.0",
     "@progress/kendo-react-animation": "^5.2.0",
@@ -93,7 +93,7 @@
     "react-hook-form": "^7.30.0",
     "react-hot-toast": "^2.2.0",
     "react-router-dom": "^6.3.0",
-    "recoil": "^0.7.0",
+    "recoil": "^0.7.2",
     "yarn": "^1.22.17"
   }
 }
