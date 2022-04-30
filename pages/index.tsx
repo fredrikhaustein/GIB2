@@ -5,7 +5,6 @@ import styled from "@emotion/styled";
 import MapPage from "./mappage";
 import Header from "./components/header";
 import Link from "next/link";
-import { Mountain } from "../src/types";
 
 //Dimensions
 const height = "100%";

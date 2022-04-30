@@ -1,7 +1,6 @@
 import dynamic from "next/dynamic";
 import { gql, useQuery } from "@apollo/client";
 import { Mountain } from "../src/types";
-import { Sidebar } from "./components/sidebar";
 import styled from "@emotion/styled";
 import React, { useEffect, useRef } from "react";
 import "leaflet/dist/leaflet.css";
@@ -33,6 +32,40 @@ const GridRow = styled.div`
   grid-template-rows: 15% 85%;
 `;
 
+const Map = dynamic(
+        () => import("./components/map"), // replace '@components/map' with your component's location
+        {
+                ssr: false, // This line is important. It's what prevents server-side render
+                loading: () => (
+                        <div
+                                style={{
+                                        textAlign: "center",
+                                        paddingTop: 20,
+                                }}
+                        >
+                                Chargement…
+                        </div>
+                ),
+        }
+);
+
+const Sidebar = dynamic(
+        () => import("./components/sidebar"), // replace '@components/map' with your component's location
+        {
+                ssr: false, // This line is important. It's what prevents server-side render
+                loading: () => (
+                        <div
+                                style={{
+                                        textAlign: "center",
+                                        paddingTop: 20,
+                                }}
+                        >
+                                Chargement…
+                        </div>
+                ),
+        }
+);
+
 export function HomePage() {
         const { data, loading, error } = useQuery(AllMountainsQuery);
 
@@ -42,23 +75,6 @@ export function HomePage() {
                 (mountain: Mountain) => ({
                         mountainName: mountain.navn,
                 })
-        );
-
-        const Map = dynamic(
-                () => import("./components/map"), // replace '@components/map' with your component's location
-                {
-                        ssr: false, // This line is important. It's what prevents server-side render
-                        loading: () => (
-                                <div
-                                        style={{
-                                                textAlign: "center",
-                                                paddingTop: 20,
-                                        }}
-                                >
-                                        Chargement…
-                                </div>
-                        ),
-                }
         );
 
         return (
