@@ -1,43 +1,95 @@
 import styled from "@emotion/styled";
-import { Button, TextField } from "@mui/material";
+import {
+  Button,
+  Checkbox,
+  FormControlLabel,
+  FormGroup,
+  TextField,
+} from "@mui/material";
 import React from "react";
-import { RecoilRoot, RecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import FileDownload from "./fileDownload";
 import Link from "next/link";
+import {
+  circleRadiusState,
+  cirlceFilterState,
+  mountainNameState,
+} from "../../state/atoms";
 
 const SidebarStyled = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: ;
   height: 700px;
-  padding: 1px;
   box-sizing: border-box;
-  margin: 10px;
+  border: "groove";
 `;
 export const Sidebar = () => {
+  const [circleRadiusRecoil, setCircleRadiusRecoil] =
+    useRecoilState(circleRadiusState);
+  const [circleRadiusStateRecoil, setCircleRadiusStateRecoil] =
+    useRecoilState(cirlceFilterState);
+
+  const mountainName = useRecoilValue(mountainNameState);
+
+  const handleOnChange = (e) => {
+    setCircleRadiusRecoil(e.target.value);
+    console.log(circleRadiusRecoil);
+  };
+
+  const handleCheckbox = (e) => {
+    const newValue = !circleRadiusStateRecoil;
+    setCircleRadiusStateRecoil(newValue);
+    console.log(circleRadiusStateRecoil);
+  };
+
   return (
-    <SidebarStyled>
+    <SidebarStyled style={{ border: "groove", borderColor: "black" }}>
       <Link href="/skredvarsling">
         <a
           style={{
             fontFamily: "fantasy",
-            marginLeft: "7px",
-            border: "Solid",
-            padding: "1px",
+            borderBottom: "Solid",
+            display: "flex",
+            alignSelf: "center",
+            fontSize: "20px",
+            textAlign: "center",
+            backgroundColor: "white",
+            height: "67px",
           }}
         >
-          Få skredvarsling
+          Skredvarsling for: {"\n"} {mountainName}
         </a>
       </Link>
       <br />
-      <br />
-      <TextField
-        id="outlined-basic"
-        label="Review"
-        variant="outlined"
-        style={{ marginTop: "5px" }}
-      />
+      <div
+        style={{
+          display: "grid",
+          alignSelf: "center",
+          width: "inherit",
+        }}
+      >
+        {/* <FormGroup
+          style={{
+            alignSelf: "center",
+          }}
+        >
+          <FormControlLabel
+            control={
+              <Checkbox defaultChecked={false} onChange={handleCheckbox} />
+            }
+            label="Filtrer på radius fra hus"
+          />
+        </FormGroup> */}
+        <a>Skriv inn radius:</a>
+        <TextField
+          id="outlined-basic"
+          label="Radius"
+          variant="outlined"
+          style={{ marginTop: "5px", alignSelf: "center" }}
+          onChange={handleOnChange}
+        />
+      </div>
       {/* <p>Info:</p>
       <p>Galdhøpiggen er norges høyeste fjell med en høyde på 2469 moh</p>
       <p>

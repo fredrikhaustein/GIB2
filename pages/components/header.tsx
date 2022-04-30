@@ -20,7 +20,10 @@ const HeaderStyled = styled.div`
 `;
 export const Header = () => {
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box
+      sx={{ flexGrow: 1 }}
+      style={{ textDecorationLine: "underline", textDecorationColor: "white" }}
+    >
       <AppBar position="static">
         <Toolbar style={{ backgroundColor: "slategrey" }}>
           <Typography
@@ -29,7 +32,7 @@ export const Header = () => {
             sx={{ flexGrow: 1 }}
             style={{ fontFamily: "fantasy" }}
           >
-            The Mountain Guide Norway
+            Til Topps
           </Typography>
           <Typography
             variant="h6"
@@ -70,20 +73,6 @@ export const Header = () => {
         </Toolbar>
       </AppBar>
     </Box>
-    // <HeaderStyled>
-    //   <ul>
-    //     <li>
-    //       <Link href="/">
-    //         <a>Home</a>
-    //       </Link>
-    //     </li>
-    //     <li>
-    //       <Link href="/mappage">
-    //         <a>Map Us</a>
-    //       </Link>
-    //     </li>
-    //   </ul>
-    // </HeaderStyled>
   );
 };
 

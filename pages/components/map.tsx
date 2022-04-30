@@ -1,4 +1,11 @@
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import {
+  MapContainer,
+  Marker,
+  Popup,
+  TileLayer,
+  Circle,
+  Polyline,
+} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { Latlng, Mountain } from "../../src/types";
 import { useEffect, useMemo, useState } from "react";
@@ -12,11 +19,15 @@ import {
   latlngMountainState,
   latlngHouseState,
   mountainNameState,
+  circleRadiusState,
+  cirlceFilterState,
+  selectedRoutes,
 } from "../../state/atoms";
 import Routing from "./Routing";
 import api from "./api/posts";
 import { Autocomplete, Paper, TextField } from "@mui/material";
-import {gql} from "@apollo/client";
+import axios from "axios";
+import GPX from "gpx-parser-builder";
 
 const GridRow = styled.div`
   display: grid;
@@ -26,22 +37,145 @@ const GridRow = styled.div`
   border-color: black;
 `;
 
-const RoutesOnMountainQuery = gql`
-        query {
-                routes {
-                        route_id
-                        route_name
-                        gpx_link
-                        mountain_id
-                }
-        }
-`;
-
 const GridColums = styled.div`
   display: grid;
   grid-template-columns: 50% 50%;
   background-color: #ffffff;
 `;
+
+const iconFilter = L.icon({
+  iconSize: [25, 41],
+  iconAnchor: [10, 41],
+  popupAnchor: [2, -40],
+  iconUrl: "https://unpkg.com/leaflet@1.6/dist/images/marker-icon.png",
+});
+
+function MultipleMarkers({
+  mountainData,
+  radiusValue,
+  houseLatlngValue,
+}): JSX.Element {
+  var newMountainData: Array<Mountain> = [];
+  var routesList: Array<any> = [];
+
+  const [mountainLatlng, setMountainLatlng] =
+    useRecoilState(latlngMountainState);
+  const [mountainNameRecoil, setMountainNameRecoil] =
+    useRecoilState(mountainNameState);
+  const [selectedRoutesRecoil, setSelectedRoutesRecoil] =
+    useRecoilState(selectedRoutes);
+
+  var selectedRoute: any;
+
+  const sendGetRequestRoutes = async (url) => {
+    try {
+      const resp = await axios.get(url);
+      const gpx = resp.data.substring(resp.data.indexOf("\n") + 1);
+      const parsedGPX = GPX.parse(gpx);
+      if (!parsedGPX) {
+        return;
+      }
+      if (parsedGPX.trk) {
+        const pos = parsedGPX.trk[0].trkseg[0].trkpt.map((p) => [
+          p.$.lat,
+          p.$.lon,
+        ]);
+        routesList = [...routesList, pos];
+      }
+      if (parsedGPX.wpt) {
+        const list = parsedGPX.wpt.map((p) => [p.$.lat, p.$.lon]);
+        routesList = [...routesList, list];
+      }
+      setSelectedRoutesRecoil(routesList);
+    } catch (err) {
+      // Handle Error Here
+      console.error(err);
+    }
+  };
+
+  const handleOnClickMountainRoutes = (id, mountainDataRoutes) => {
+    mountainDataRoutes.mountains.forEach((e) => {
+      if (e.ogc_fid === id) {
+        selectedRoute = e.route_urls;
+        return;
+      } else {
+        return;
+      }
+    });
+    if (selectedRoute.length == 0) {
+      setSelectedRoutesRecoil([]);
+      return;
+    } else {
+      for (let index = 0; index < selectedRoute.length; index++) {
+        sendGetRequestRoutes(selectedRoute[index]);
+      }
+    }
+  };
+
+  mountainData.mountains.forEach((e) => {
+    const p = 0.017453292519943295; // Math.PI / 180
+    if (
+      12742 *
+        Math.asin(
+          Math.sqrt(
+            0.5 -
+              Math.cos((e.lat - houseLatlngValue.lat) * p) / 2 +
+              (Math.cos(houseLatlngValue.lat * p) *
+                Math.cos(e.lat * p) *
+                (1 - Math.cos((e.lon - houseLatlngValue.lng) * p))) /
+                2
+          )
+        ) <=
+      radiusValue
+    ) {
+      newMountainData.push(e);
+    }
+  });
+
+  return (
+    <>
+      {newMountainData.map((m) => {
+        return (
+          <Marker
+            key={m.ogc_fid}
+            position={L.latLng(m.lat, m.lon)}
+            icon={iconFilter}
+            eventHandlers={{
+              click: (e) => {
+                setMountainLatlng(L.latLng(m.lat, m.lon));
+                setMountainNameRecoil(m.navn);
+                handleOnClickMountainRoutes(m.ogc_fid, mountainData);
+              },
+            }}
+          >
+            <Popup>
+              {m.navn} er {m.h_yde} meter
+            </Popup>
+          </Marker>
+        );
+      })}
+    </>
+  );
+}
+function CreatePolyLine(): JSX.Element {
+  const polyLineRoutes = useRecoilValue(selectedRoutes);
+  if (polyLineRoutes) {
+    return (
+      <>
+        {polyLineRoutes.map((m) => {
+          return (
+            <Polyline
+              pathOptions={{ fillColor: "red", color: "blue" }}
+              positions={m}
+            />
+          );
+        })}
+      </>
+    );
+  } else {
+    return <></>;
+  }
+}
 
 const MountainMap = ({ mapData }) => {
   let mapDataArray: Array<Mountain> = mapData.mountains.map(
@@ -52,6 +186,7 @@ const MountainMap = ({ mapData }) => {
       lon: mountain.lon,
       navn: mountain.navn,
       wkb_geometry: mountain.wkb_geometry,
+      route_urls: mountain.route_urls,
     })
   );
 
@@ -75,6 +210,10 @@ const MountainMap = ({ mapData }) => {
   const [mountainNameRecoil, setMountainNameRecoil] =
     useRecoilState(mountainNameState);
 
+  const circleRadius = useRecoilValue(circleRadiusState);
+  const showingAllMountains = useRecoilValue(cirlceFilterState);
+  const polyLineRoutes = useRecoilValue(selectedRoutes);
+
   const [mountainStateLatlng, setMountainStateLatlng] = useState(
     L.latLng(0, 0)
   );
@@ -86,6 +225,7 @@ const MountainMap = ({ mapData }) => {
   const [inputValue, setInputValue] = useState("");
   const [clickValue, setClickValue] = useState("");
   const [choosenValue, setChoosenValue] = useState("");
+  const [circleMountainEvent, setCircleMountainEvent] = useState(true);
 
   // UseEffect
 
@@ -97,15 +237,6 @@ const MountainMap = ({ mapData }) => {
         );
         const adresser = response.data.adresser;
         setOptions(adresser.map((a) => `${a.adressetekst}, ${a.kommunenavn}`));
-        // if (clickValue) {
-        //   const latlng = adresser.map((a) =>
-        //     L.latLng(a.representasjonspunkt.lat, a.representasjonspunkt.lon)
-        //   );
-        //   setHouse(latlng);
-        //   console.log("Dette er house latlng");
-        //   console.log(houselatLng);
-        // }
-        // console.log("Dette er value " + houselatLng);
       } catch (err) {
         if (err.response) {
           console.log(err.response.data);
@@ -157,13 +288,12 @@ const MountainMap = ({ mapData }) => {
     setMountainStateLatlng(L.latLng(newMountain.lat, newMountain.lon));
     console.log("Her er state mountain" + mountainLatlng);
     setMountainInfo(`${newMountain.navn} er ${newMountain.h_yde} MOH`);
-    setMountainNameRecoil(newMountain.navn);
   };
 
   return (
     <GridRow>
       <GridColums>
-        <select
+        {/* <select
           onChange={handleMountainChange}
           style={{
             height: "inherit",
@@ -184,15 +314,12 @@ const MountainMap = ({ mapData }) => {
               {mountain.navn}
             </option>
           ))}
-        </select>
+        </select> */}
         <Autocomplete
           id="combo-box-demo"
           placeholder="Adresse"
           options={options}
           onChange={(event: any, newValue: string) => {
-            // setClickValue(newValue);
-            // console.log("Clickvalue");
-            // console.log(clickValue);
             setChoosenValue(newValue);
             console.log("New value");
             console.log(choosenValue);
@@ -236,7 +363,7 @@ const MountainMap = ({ mapData }) => {
       <MapContainer
         center={[biggestMountain.lat, biggestMountain.lon]}
         zoom={6}
-        scrollWheelZoom={false}
+        scrollWheelZoom={true}
         style={{ height: "100%", width: "100%" }}
         whenCreated={setMap}
       >
@@ -244,17 +371,25 @@ const MountainMap = ({ mapData }) => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {mountainStateLatlng && !houselatLng && (
+        {/* {mountainStateLatlng && (
           <Marker position={mountainStateLatlng}>
             <Popup>{mountainInfo}</Popup>
           </Marker>
-        )}
+        )} */}
         {houselatLng && mountainStateLatlng && (
-          <Routing
-            sourceCity={houselatLng}
-            destinationCity={mountainStateLatlng}
+          <Routing sourceCity={houselatLng} destinationCity={mountainLatlng} />
+        )}
+        {houselatLng && circleMountainEvent && (
+          <Circle center={houselatLng[0]} radius={circleRadius * 1000} />
+        )}
+        {houselatLng && circleMountainEvent && (
+          <MultipleMarkers
+            mountainData={mapData}
+            radiusValue={circleRadius}
+            houseLatlngValue={houselatLng[0]}
           />
         )}
+        {<CreatePolyLine />}
       </MapContainer>
     </GridRow>
   );

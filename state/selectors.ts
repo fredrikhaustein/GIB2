@@ -10,7 +10,7 @@ export const getLatLngHouse = selector({
 });
 
 export const getLatLngMountain = selector({
-  key: "getLatLngHouse", // unique ID (with respect to other atoms/selectors)
+  key: "getLatLngMountain", // unique ID (with respect to other atoms/selectors)
   get: ({ get }) => {
     const latlng = get(latlngMountainState);
     return latlng;
