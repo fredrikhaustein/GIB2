@@ -46,7 +46,19 @@ export function HomePage() {
 
         const Map = dynamic(
                 () => import("./components/map"), // replace '@components/map' with your component's location
-                { ssr: false } // This line is important. It's what prevents server-side render
+                {
+                        ssr: false, // This line is important. It's what prevents server-side render
+                        loading: () => (
+                                <div
+                                        style={{
+                                                textAlign: "center",
+                                                paddingTop: 20,
+                                        }}
+                                >
+                                        Chargement…
+                                </div>
+                        ),
+                }
         );
 
         return (

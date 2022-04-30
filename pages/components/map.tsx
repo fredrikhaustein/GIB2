@@ -204,7 +204,7 @@ const MountainMap = ({ mapData }) => {
 
   const biggestMountain: Mountain = findMountain(1);
 
-  const [map, setMap] = useState(null);
+  const [map, seMap] = useState(null);
   const [mountainLatlng, setMountainLatlng] =
     useRecoilState(latlngMountainState);
   const [mountainNameRecoil, setMountainNameRecoil] =
