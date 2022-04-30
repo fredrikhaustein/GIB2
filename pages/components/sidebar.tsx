@@ -69,7 +69,7 @@ export const Sidebar = () => {
           width: "inherit",
         }}
       >
-        <FormGroup
+        {/* <FormGroup
           style={{
             alignSelf: "center",
           }}
@@ -80,7 +80,8 @@ export const Sidebar = () => {
             }
             label="Filtrer på radius fra hus"
           />
-        </FormGroup>
+        </FormGroup> */}
+        <a>Skriv inn radius:</a>
         <TextField
           id="outlined-basic"
           label="Radius"

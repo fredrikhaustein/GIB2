@@ -25,3 +25,8 @@ export const cirlceFilterState = atom({
   key: "CircleFilterState",
   default: false,
 });
+
+export const selectedRoutes = atom({
+  key: "SelectedRoutes",
+  default: [],
+});

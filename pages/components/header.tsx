@@ -73,20 +73,6 @@ export const Header = () => {
         </Toolbar>
       </AppBar>
     </Box>
-    // <HeaderStyled>
-    //   <ul>
-    //     <li>
-    //       <Link href="/">
-    //         <a>Home</a>
-    //       </Link>
-    //     </li>
-    //     <li>
-    //       <Link href="/mappage">
-    //         <a>Map Us</a>
-    //       </Link>
-    //     </li>
-    //   </ul>
-    // </HeaderStyled>
   );
 };
 

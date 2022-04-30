@@ -13,9 +13,18 @@ type Mountain {
 }
 
 type Mutation {
+  createRoute(gpx_link: String!, mountain_id: Int!, route_name: String!): Route!
   routeAdd(gpx_link: String!, mountain_id: Int!): Mountain!
 }
 
 type Query {
   mountains: [Mountain]!
+  route: [Route]!
+}
+
+type Route {
+  gpx_link: String
+  mountain_id: Int
+  route_id: Int
+  route_name: String
 }
