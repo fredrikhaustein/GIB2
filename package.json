@@ -78,6 +78,7 @@
     "@progress/kendo-react-treeview": "^5.2.0",
     "@types/leaflet-routing-machine": "^3.2.3",
     "@types/react-router": "^5.1.18",
+    "@types/recoil": "^0.0.9",
     "aws-sdk": "^2.1116.0",
     "axios": "^0.26.0",
     "fast-xml-parser": "^4.0.7",

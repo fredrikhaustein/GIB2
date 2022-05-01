@@ -1,13 +1,9 @@
 import dynamic from "next/dynamic";
 import { gql, useQuery } from "@apollo/client";
-import { Mountain } from "../src/types";
-import { Sidebar } from "./components/sidebar";
 import styled from "@emotion/styled";
 import React, { useEffect, useRef } from "react";
 import "leaflet/dist/leaflet.css";
 import Header from "./components/header";
-import MapFilter from "./components/filtermountains";
-import { Slider } from "@mui/material";
 
 const AllMountainsQuery = gql`
   query {

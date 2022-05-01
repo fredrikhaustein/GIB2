@@ -57,6 +57,15 @@ export const Header = () => {
             component="div"
             style={{ marginRight: "60px" }}
           >
+            <Link href="/upload">
+              <a style={{ fontFamily: "fantasy" }}>Upload File</a>
+            </Link>
+          </Typography>
+          <Typography
+            variant="h6"
+            component="div"
+            style={{ marginRight: "60px" }}
+          >
             <Link href="/mountainfilter">
               <a style={{ fontFamily: "fantasy" }}>Filter Mountains</a>
             </Link>
