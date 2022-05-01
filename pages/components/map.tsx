@@ -319,7 +319,7 @@ const MountainMap = ({ mapData }): JSX.Element => {
             </option>
           ))}
         </select> */}
-        <div style={{ backgroundColor: "#add8e6" }}></div>
+        <div style={{ backgroundColor: "#598493" }}></div>
         <Autocomplete
           id="combo-box-demo"
           placeholder="Adresse"
@@ -333,8 +333,8 @@ const MountainMap = ({ mapData }): JSX.Element => {
           PaperComponent={({ children }) => (
             <Paper
               style={{
-                background: "#add8e6",
-                backgroundColor: "#add8e6",
+                background: "#598493",
+                backgroundColor: "white",
               }}
               elevation={10}
             >
@@ -348,7 +348,7 @@ const MountainMap = ({ mapData }): JSX.Element => {
             width: "inherit",
             paddingBottom: "0%",
             height: "inherit",
-            backgroundColor: "#b7e0ed",
+            backgroundColor: "white",
           }}
           renderInput={(params) => (
             <TextField
@@ -369,7 +369,7 @@ const MountainMap = ({ mapData }): JSX.Element => {
             />
           )}
         />
-        <div style={{ backgroundColor: "#add8e6" }}></div>
+        <div style={{ backgroundColor: "#598493" }}></div>
       </GridColums>
       <MapContainer
         center={[biggestMountain.lat, biggestMountain.lon]}

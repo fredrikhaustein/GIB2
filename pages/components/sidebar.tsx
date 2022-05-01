@@ -4,6 +4,7 @@ import {
   Checkbox,
   FormControlLabel,
   FormGroup,
+  makeStyles,
   TextField,
 } from "@mui/material";
 import React from "react";
@@ -20,10 +21,11 @@ const SidebarStyled = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  height: 700px;
+  height: 727px;
   box-sizing: border-box;
   border: "groove";
 `;
+
 export const Sidebar = () => {
   const [circleRadiusRecoil, setCircleRadiusRecoil] =
     useRecoilState(circleRadiusState);
@@ -44,21 +46,29 @@ export const Sidebar = () => {
   };
 
   return (
-    <SidebarStyled style={{ border: "groove", borderColor: "black" }}>
+    <SidebarStyled
+      style={{
+        color: "white",
+        backgroundColor: "#598493",
+      }}
+    >
       <Link href="/skredvarsling">
         <a
           style={{
-            fontFamily: "fantasy",
-            borderBottom: "Solid",
+            fontFamily: "unset",
+            color: "white",
             display: "flex",
             alignSelf: "center",
             fontSize: "20px",
             textAlign: "center",
-            backgroundColor: "white",
+            backgroundColor: "#699cad",
             height: "67px",
+            borderRadius: "6px",
+            paddingLeft: "40px",
+            paddingRight: "40px",
           }}
         >
-          Skredvarsling for: {"\n"} {mountainName}
+          Hent skredvarsling: {"\n"} {mountainName}
         </a>
       </Link>
       <br />
@@ -86,8 +96,13 @@ export const Sidebar = () => {
           id="outlined-basic"
           label="Radius"
           variant="outlined"
-          style={{ marginTop: "5px", alignSelf: "center" }}
+          style={{
+            marginTop: "5px",
+            alignSelf: "center",
+            color: "white",
+          }}
           onChange={handleOnChange}
+          sx={{ input: { color: "white" } }}
         />
       </div>
       {/* <p>Info:</p>

@@ -73,7 +73,7 @@ export default function Home() {
           style={{
             fontSize: "50px",
             borderColor: "black",
-            fontFamily: "fantasy",
+            fontFamily: "unset",
             display: "flex",
             justifyContent: "center",
             marginTop: "250px",
@@ -85,12 +85,11 @@ export default function Home() {
         </a>
       </Link>
       <br />
-      <br />
       <Link href={{ pathname: "/upload", query: data }}>
         <a
           style={{
             fontSize: "50px",
-            fontFamily: "fantasy",
+            fontFamily: "unset",
             display: "flex",
             justifyContent: "center",
             borderTop: "groove",

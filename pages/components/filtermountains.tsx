@@ -52,7 +52,7 @@ function MultipleMarkers({ mountainData, filterValue }) {
     return (
       <Marker key={m.ogc_fid} position={L.latLng(m.lat, m.lon)} icon={icon}>
         <Popup>
-          {m.navn} er {m.h_yde} meter
+          {m.navn}: {m.h_yde}moh
         </Popup>
       </Marker>
     );
@@ -73,12 +73,12 @@ const MapPageFilter = ({ mountaindata }) => {
       <MapContainer
         center={[61.4, 8.46]}
         zoom={6}
-        scrollWheelZoom={false}
-        style={{ height: "600px" }}
+        scrollWheelZoom={true}
+        style={{ height: "650px" }}
       >
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          url="https://api.mapbox.com/styles/v1/iversg/cl2mcx5hv000r15qx782sza31/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaXZlcnNnIiwiYSI6ImNsMm1lank3YzB2eTYzZW5xejJ1NHk0eG0ifQ.n7b3yoDn02vItll-wCKs1w"
+          attribution='Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery &copy; <a href="https://www.mapbox.com/">Mapbox</a>'
         />
         <MultipleMarkers
           mountainData={mountaindata}

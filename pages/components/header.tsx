@@ -20,17 +20,14 @@ const HeaderStyled = styled.div`
 `;
 export const Header = () => {
   return (
-    <Box
-      sx={{ flexGrow: 1 }}
-      style={{ textDecorationLine: "underline", textDecorationColor: "white" }}
-    >
+    <Box sx={{ flexGrow: 1 }} style={{}}>
       <AppBar position="static">
-        <Toolbar style={{ backgroundColor: "slategrey" }}>
+        <Toolbar style={{ backgroundColor: "#598493", color: "white" }}>
           <Typography
             variant="h4"
             component="div"
             sx={{ flexGrow: 1 }}
-            style={{ fontFamily: "fantasy" }}
+            style={{ fontFamily: "unset" }}
           >
             Til Topps
           </Typography>
@@ -40,7 +37,7 @@ export const Header = () => {
             style={{ marginRight: "60px" }}
           >
             <Link href="/">
-              <a style={{ fontFamily: "fantasy" }}>Home</a>
+              <a style={{ fontFamily: "unset" }}>Home</a>
             </Link>
           </Typography>
           <Typography
@@ -49,7 +46,7 @@ export const Header = () => {
             style={{ marginRight: "60px" }}
           >
             <Link href="/mappage">
-              <a style={{ fontFamily: "fantasy" }}>Map</a>
+              <a style={{ fontFamily: "unset" }}>Map</a>
             </Link>
           </Typography>
           <Typography
@@ -58,7 +55,7 @@ export const Header = () => {
             style={{ marginRight: "60px" }}
           >
             <Link href="/upload">
-              <a style={{ fontFamily: "fantasy" }}>Upload File</a>
+              <a style={{ fontFamily: "unset" }}>Upload File</a>
             </Link>
           </Typography>
           <Typography
@@ -67,7 +64,7 @@ export const Header = () => {
             style={{ marginRight: "60px" }}
           >
             <Link href="/mountainfilter">
-              <a style={{ fontFamily: "fantasy" }}>Filter Mountains</a>
+              <a style={{ fontFamily: "unset" }}>Filter Mountains</a>
             </Link>
           </Typography>
           <Typography
@@ -76,7 +73,7 @@ export const Header = () => {
             style={{ marginRight: "60px" }}
           >
             <Link href="/about">
-              <a style={{ fontFamily: "fantasy" }}>About</a>
+              <a style={{ fontFamily: "unset" }}>About</a>
             </Link>
           </Typography>
         </Toolbar>
