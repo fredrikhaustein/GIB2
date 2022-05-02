@@ -1,8 +1,6 @@
 import styled from "@emotion/styled";
 import dynamic from "next/dynamic";
 import { gql, useQuery } from "@apollo/client";
-import { Mountain } from "../src/types";
-import { RecoilRoot } from "recoil";
 import { BrowserRouter } from "react-router-dom";
 
 const GridColums = styled.div`
@@ -12,7 +10,7 @@ const GridColums = styled.div`
 `;
 
 const Sidebar = dynamic(
-        () => import("./components/sidebar"), // replace '@components/map' with your component's location
+        () => import("../components/sidebar"), // replace '@components/map' with your component's location
         {
                 ssr: false, // This line is important. It's what prevents server-side render
                 loading: () => (
